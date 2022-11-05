@@ -8,7 +8,18 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
+    let viewModel: MainViewModelProtocol
+    
+    init(viewModel: MainViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     lazy var addItemButton: UIBarButtonItem = {
         let plusIcon = UIImage(systemName: "plus.circle")
         let button: UIBarButtonItem = UIBarButtonItem(
@@ -30,8 +41,7 @@ class MainViewController: UIViewController {
     }
 
     @objc private func tappedAddItemButton() {
-        
+        viewModel.addNewItemTap()
     }
-
 }
 

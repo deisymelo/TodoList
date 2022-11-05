@@ -7,17 +7,29 @@
 
 import UIKit
 
-class MainCoordinator: Coordinator {
+class MainCoordinator: Coordinator<Void> {
     
-    var childCoordinators: [Coordinator] = []
     private var navigationController: UINavigationController
+    var viewModel: MainViewModelCoordinatorProtocol?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func start() {
-        let viewController = MainViewController()
+    override func start() {
+        let viewModel = MainViewModel()
+        self.viewModel = viewModel
+        self.viewModel?.delegate = self
+        let viewController = MainViewController(viewModel: viewModel)
         navigationController.setViewControllers([viewController], animated: false)
+    }
+}
+
+extension MainCoordinator: MainViewModelNavigationDelegate {
+
+    func addNewItemTap() {
+        let addItemCoordinator = AddItemCoordinator(navigationController: navigationController)
+        childCoordinators.append(addItemCoordinator)
+        addItemCoordinator.start()
     }
 }

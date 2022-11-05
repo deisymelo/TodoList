@@ -8,21 +8,28 @@
 import Foundation
 import UIKit
 
-protocol Coordinator {
-    var childCoordinators: [Coordinator] { get set }
-    func start()
+class Coordinator<T> {
+
+    var childCoordinators: [Coordinator<T>] = []
+    var onFinish: ((T)->Void)?
+    
+    func start() {}
+    
+    //Informa que el coordinator finalizó
+    func finish(result: T) {
+        onFinish?(result)
+    }
 }
 
-final class AppCoordinator: Coordinator {
+final class AppCoordinator: Coordinator<Void> {
     
-    var childCoordinators: [Coordinator] = []
     var window: UIWindow
     
     init(window: UIWindow) {
         self.window = window
     }
     
-    func start() {
+    override func start() {
         let navigationController = UINavigationController()
         let mainCoordinator = MainCoordinator(navigationController: navigationController)
         childCoordinators.append(mainCoordinator)
