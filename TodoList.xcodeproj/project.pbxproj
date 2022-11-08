@@ -21,6 +21,7 @@
 		64BC203629034D4C0032BEBE /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BC203529034D4C0032BEBE /* TodoItem.swift */; };
 		64BC2039290350580032BEBE /* TodoList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64BC2037290350580032BEBE /* TodoList.xcdatamodeld */; };
 		64BC203B290351350032BEBE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BC203A290351350032BEBE /* CoreDataManager.swift */; };
+		64D5125D291B056000D9E634 /* TodoItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D5125C291B056000D9E634 /* TodoItemCell.swift */; };
 		64ED3A3F291485C8002B9CF1 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ED3A3E291485C8002B9CF1 /* AddItemViewController.swift */; };
 		64ED3A41291485D7002B9CF1 /* AddItemCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ED3A40291485D7002B9CF1 /* AddItemCoordinator.swift */; };
 		64ED3A43291485E3002B9CF1 /* AddItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ED3A42291485E3002B9CF1 /* AddItemViewModel.swift */; };
@@ -62,6 +63,7 @@
 		64BC203529034D4C0032BEBE /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		64BC2038290350580032BEBE /* TodoList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoList.xcdatamodel; sourceTree = "<group>"; };
 		64BC203A290351350032BEBE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		64D5125C291B056000D9E634 /* TodoItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemCell.swift; sourceTree = "<group>"; };
 		64ED3A3E291485C8002B9CF1 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		64ED3A40291485D7002B9CF1 /* AddItemCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCoordinator.swift; sourceTree = "<group>"; };
 		64ED3A42291485E3002B9CF1 /* AddItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewModel.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		6422E8982902002700990A4B /* MainView */ = {
 			isa = PBXGroup;
 			children = (
+				6479D6B52916F102000A831A /* Cells */,
 				6422E86C2901F5B500990A4B /* MainViewController.swift */,
 				6422E89B290200F100990A4B /* MainCoordinator.swift */,
 				6435876F2909E4D000D59F7C /* MainViewModel.swift */,
@@ -167,6 +170,14 @@
 				6422E8712901F5B700990A4B /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		6479D6B52916F102000A831A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				64D5125C291B056000D9E634 /* TodoItemCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		64BC203429034D3B0032BEBE /* Model */ = {
@@ -331,6 +342,7 @@
 			files = (
 				643587722909E54A00D59F7C /* Box.swift in Sources */,
 				64ED3A43291485E3002B9CF1 /* AddItemViewModel.swift in Sources */,
+				64D5125D291B056000D9E634 /* TodoItemCell.swift in Sources */,
 				64BC203629034D4C0032BEBE /* TodoItem.swift in Sources */,
 				6422E86D2901F5B500990A4B /* MainViewController.swift in Sources */,
 				64BC2033290302C00032BEBE /* AppCoordinator.swift in Sources */,

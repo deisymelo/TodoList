@@ -9,6 +9,9 @@ import Foundation
 
 protocol MainViewModelProtocol {
     var itemList: Box<[TodoItem]> { get set }
+    var numberOfRowsInSection: Int { get }
+    
+    func getItemBy(_ indexPath: IndexPath) -> TodoItem?
     func addNewItemTap()
 }
 
@@ -23,11 +26,20 @@ protocol MainViewModelCoordinatorProtocol {
 class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     
     var itemList: Box<[TodoItem]> = Box([])
+    
+    var numberOfRowsInSection: Int {
+        itemList.value.count
+    }
+    
     var delegate: MainViewModelNavigationDelegate?
     
     init() {
         let list = CoreDataManager().fetchItems()
         itemList.value = list
+    }
+    
+    func getItemBy(_ indexPath: IndexPath) -> TodoItem? {
+        return itemList.value[indexPath.row]
     }
     
     func addNewItemTap() {
