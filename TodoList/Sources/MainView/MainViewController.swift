@@ -50,6 +50,12 @@ class MainViewController: UIViewController {
         view.addSubview(tableView)
         setNavigationBar()
         setConstrains()
+        setupBindings()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear()
     }
     
     func setNavigationBar() {
@@ -65,6 +71,19 @@ class MainViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func setupBindings() {
+        viewModel.itemList.bind { [weak self] list in
+            guard let strongSelf = self else { return }
+            
+            guard !list.isEmpty else {
+                //TODO: Display empty message
+                return
+            }
+            
+            strongSelf.tableView.reloadData()
+        }
     }
 
     @objc private func tappedAddItemButton() {
