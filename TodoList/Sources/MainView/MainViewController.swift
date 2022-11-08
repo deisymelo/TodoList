@@ -49,6 +49,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(tableView)
         setNavigationBar()
+        setConstrains()
     }
     
     func setNavigationBar() {

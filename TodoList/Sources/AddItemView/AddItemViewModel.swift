@@ -9,16 +9,21 @@ import Foundation
 
 protocol AddItemViewModelProtocol: AnyObject {
     func addNewItemTap(item: TodoItem)
+    func addItemError(_ msn: String)
 }
 
 class AddItemViewModel: AddItemViewModelProtocol {
     
     weak var delegate: AddItemCoordinatorProtocol?
-    
+    var coreData: CoreDataManagerProtocol = CoreDataManager()
+
     func addNewItemTap(item: TodoItem) {
-        let manager = CoreDataManager()
-        manager.saveItem(item)
+        coreData.saveItem(item)
         delegate?.closeView()
+    }
+    
+    func addItemError(_ msn: String) {
+        //Todo: Display error alert
     }
 }
 

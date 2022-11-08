@@ -32,14 +32,15 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     }
     
     var delegate: MainViewModelNavigationDelegate?
+    var coreData: CoreDataManagerProtocol
     
     init() {
-        let list = CoreDataManager().fetchItems()
-        itemList.value = list
+        coreData = CoreDataManager()
+        itemList.value = coreData.getItems()
     }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem? {
-        return itemList.value[indexPath.row]
+        itemList.value[indexPath.row]
     }
     
     func addNewItemTap() {

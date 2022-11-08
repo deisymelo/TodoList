@@ -100,6 +100,12 @@ class AddItemViewController: UIViewController {
     }
     
     private func saveItem() {
-        viewModel.addNewItemTap(item: TodoItem(title: "test", description: "test"))
+        if let title = titleTextField.text,
+           let description = descriptionTextField.text,
+           !title.isEmpty {
+            viewModel.addNewItemTap(item: TodoItem(title: title, description: description))
+        } else {
+            viewModel.addItemError("Title is needed")
+        }
     }
 }

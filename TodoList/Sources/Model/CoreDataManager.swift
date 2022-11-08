@@ -7,11 +7,18 @@
 
 import CoreData
 
-final class CoreDataManager {
+protocol CoreDataManagerProtocol {
+    func saveItem(_ todoItem: TodoItem)
+    func getItems() -> [TodoItem]
+}
+
+final class CoreDataManager: CoreDataManagerProtocol {
     lazy var persistenContainer: NSPersistentContainer = {
        let container = NSPersistentContainer(name: "TodoList")
         container.loadPersistentStores { _, error in
-            print(error?.localizedDescription as Any)
+            if let error = error as? NSError {
+                fatalError("persistenContainer: \(error.userInfo)")
+            }
         }
         return container
     }()
@@ -29,11 +36,11 @@ final class CoreDataManager {
         do {
             try context.save()
         } catch {
-            print(error)
+            print("saveItem: \(error)")
         }
     }
     
-    func fetchItems() -> [TodoItem] {
+    func getItems() -> [TodoItem] {
         do {
             let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
             let list =  try context.fetch(fetchRequest)
@@ -41,14 +48,14 @@ final class CoreDataManager {
             list.forEach { item in
                 let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
                 let todoItem: TodoItem = TodoItem(title: item.title ?? "",
-                                                  description: item.description,
+                                                  description: item.itemDescription ?? "",
                                                   status: status)
                 todoList.append(todoItem)
             }
             
             return todoList
         } catch {
-            print(error)
+            print("getItems: \(error)")
             return []
         }
     }
