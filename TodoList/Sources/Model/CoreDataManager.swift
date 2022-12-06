@@ -10,6 +10,7 @@ import CoreData
 protocol CoreDataManagerProtocol {
     func saveItem(_ todoItem: TodoItem)
     func getItems() -> [TodoItem]
+    func getItemBy(_ index: Int) -> TodoItem?
 }
 
 final class CoreDataManager: CoreDataManagerProtocol {
@@ -57,6 +58,23 @@ final class CoreDataManager: CoreDataManagerProtocol {
         } catch {
             print("getItems: \(error)")
             return []
+        }
+    }
+    
+    func getItemBy(_ index: Int) -> TodoItem? {
+        do {
+            let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+            let list =  try context.fetch(fetchRequest)
+            let item = list[index]
+            
+            let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
+            let todoItem: TodoItem = TodoItem(title: item.title ?? "",
+                                              description: item.itemDescription ?? "",
+                                              status: status)
+            return todoItem
+        } catch {
+            print("getItemBy index \(index): \(error)")
+            return nil
         }
     }
 }

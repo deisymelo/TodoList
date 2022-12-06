@@ -13,10 +13,12 @@ protocol MainViewModelProtocol {
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem?
     func addNewItemTap()
+    func showDetail(index: Int)
 }
 
 protocol MainViewModelNavigationDelegate {
     func addNewItemTap()
+    func showDetail(index: Int)
 }
 
 protocol MainViewModelCoordinatorProtocol {
@@ -48,5 +50,9 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     
     func addNewItemTap() {
         delegate?.addNewItemTap()
+    }
+    
+    func showDetail(index: Int) {
+        delegate?.showDetail(index: index)
     }
 }

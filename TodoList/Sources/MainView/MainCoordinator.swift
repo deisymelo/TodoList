@@ -39,4 +39,15 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
         childCoordinators.append(addItemCoordinator)
         addItemCoordinator.start()
     }
+    
+    func showDetail(index: Int) {
+        let detailCoordinator = DetailCoordinator(navigationController: navigationController,
+                                                  itemPosition: index)
+        detailCoordinator.onFinish = { [weak self] _ in
+            self?.childCoordinators.removeLast()
+        }
+        
+        childCoordinators.append(detailCoordinator)
+        detailCoordinator.start()
+    }
 }
