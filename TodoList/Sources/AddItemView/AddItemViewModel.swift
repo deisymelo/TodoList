@@ -15,11 +15,15 @@ protocol AddItemViewModelProtocol: AnyObject {
 class AddItemViewModel: AddItemViewModelProtocol {
     
     weak var delegate: AddItemCoordinatorProtocol?
-    var coreData: CoreDataManagerProtocol = CoreDataManager()
+    var coreData: CoreDataManagerProtocol
+    
+    init(coreData: CoreDataManagerProtocol) {
+        self.coreData = coreData
+    }
 
     func addNewItemTap(item: TodoItem) {
         coreData.saveItem(item)
-        delegate?.closeView()
+        delegate?.closeView(success: true)
     }
     
     func addItemError(_ msn: String) {

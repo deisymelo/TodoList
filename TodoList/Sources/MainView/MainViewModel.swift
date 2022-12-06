@@ -12,7 +12,6 @@ protocol MainViewModelProtocol {
     var numberOfRowsInSection: Int { get }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem?
-    func viewWillAppear()
     func addNewItemTap()
 }
 
@@ -25,7 +24,7 @@ protocol MainViewModelCoordinatorProtocol {
 }
 
 class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
-    
+
     var itemList: Box<[TodoItem]> = Box([])
     
     var numberOfRowsInSection: Int {
@@ -39,12 +38,8 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
         coreData = CoreDataManager()
     }
     
-    private func loadItems() {
+    func loadItems() {
         itemList.value = coreData.getItems()
-    }
-    
-    func viewWillAppear() {
-        loadItems()
     }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem? {

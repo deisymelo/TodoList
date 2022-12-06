@@ -10,7 +10,7 @@ import UIKit
 class MainCoordinator: Coordinator<Void> {
     
     private var navigationController: UINavigationController
-    var viewModel: MainViewModelCoordinatorProtocol?
+    weak var viewModel: MainViewModel?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -22,6 +22,7 @@ class MainCoordinator: Coordinator<Void> {
         self.viewModel?.delegate = self
         let viewController = MainViewController(viewModel: viewModel)
         navigationController.setViewControllers([viewController], animated: false)
+        viewModel.loadItems()
     }
 }
 
@@ -29,6 +30,12 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
 
     func addNewItemTap() {
         let addItemCoordinator = AddItemCoordinator(navigationController: navigationController)
+        addItemCoordinator.onFinish = { [weak self] result in
+            if result {
+                self?.viewModel?.loadItems()
+            }
+            self?.childCoordinators.removeLast()
+        }
         childCoordinators.append(addItemCoordinator)
         addItemCoordinator.start()
     }

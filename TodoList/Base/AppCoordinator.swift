@@ -10,7 +10,7 @@ import UIKit
 
 class Coordinator<T> {
 
-    var childCoordinators: [Coordinator<T>] = []
+    var childCoordinators: [Any] = []
     var onFinish: ((T)->Void)?
     
     func start() {}

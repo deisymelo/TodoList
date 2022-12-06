@@ -53,11 +53,6 @@ class MainViewController: UIViewController {
         setupBindings()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.viewWillAppear()
-    }
-    
     func setNavigationBar() {
         navigationItem.rightBarButtonItem = addItemButton
         navigationItem.title = "TODO List"
