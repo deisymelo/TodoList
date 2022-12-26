@@ -7,21 +7,19 @@
 
 import Foundation
 
-enum TodoStatus: String {
-    case pending
-    case finished
-}
-
 struct TodoItem {
+    let id: String?
     let title: String
     let description: String
-    var status: TodoStatus
+    var pending: Bool
     
-    init(title: String,
+    init(id: String? = nil,
+         title: String,
          description: String,
-         status: TodoStatus = .pending) {
+         pending: Bool = true) {
+        self.id = id
         self.title = title
         self.description = description
-        self.status = status
+        self.pending = pending
     }
 }

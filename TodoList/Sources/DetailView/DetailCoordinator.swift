@@ -15,16 +15,16 @@ class DetailCoordinator: Coordinator<Bool> {
     
     private var navigationController: UINavigationController
     var viewModel: DetailViewModel?
-    var itemPosition: Int?
+    var itemId: String?
     weak var viewController: DetailViewController?
     
-    init(navigationController: UINavigationController, itemPosition: Int) {
+    init(navigationController: UINavigationController, itemId: String) {
         self.navigationController = navigationController
-        self.itemPosition = itemPosition
+        self.itemId = itemId
     }
     
     override func start() {
-        let viewModel = DetailViewModel(coreData: CoreDataManager(), index: itemPosition)
+        let viewModel = DetailViewModel(coreData: CoreDataManager(), itemId: itemId)
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = DetailViewController(viewModel: viewModel)

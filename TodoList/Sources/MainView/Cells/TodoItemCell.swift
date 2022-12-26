@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TodoItemCellDelegate: AnyObject {
-    func changeStatus(_ index: Int)
-    func selectItem(_ index: Int)
+    func changeStatus(_ id: String)
+    func selectItem(_ id: String)
 }
 
 class TodoItemCell: UITableViewCell {
@@ -63,7 +63,7 @@ class TodoItemCell: UITableViewCell {
         return button
     }()
     
-    private var position: Int?
+    private var itemId: String?
     weak var delegate: TodoItemCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -115,31 +115,31 @@ class TodoItemCell: UITableViewCell {
         ])
     }
     
-    func setData(_ data: TodoItem, itemIndex: Int) {
+    func setData(_ data: TodoItem) {
         titleLabel.text = data.title
         descriptionLabel.text = data.description
-        position = itemIndex
+        itemId = data.id
         
-        let imageName = data.status == .pending ? "circle" : "circle.fill"
+        let imageName = data.pending ? "circle" : "circle.fill"
         changeStatusButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
     @objc func selectItem() {
         guard let delegate = self.delegate,
-              let index = self.position else {
+              let id = self.itemId else {
             return
         }
         
-        delegate.selectItem(index)
+        delegate.selectItem(id)
     }
     
     @objc func changeStatus() {
         guard let delegate = self.delegate,
-              let index = self.position else {
+              let id = self.itemId else {
             return
         }
         
-        delegate.changeStatus(index)
+        delegate.changeStatus(id)
     }
 }
 

@@ -104,7 +104,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
        
-        cell.setData(item, itemIndex: indexPath.row)
+        cell.setData(item)
         cell.delegate = self
         return cell
     }
@@ -112,12 +112,12 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension MainViewController: TodoItemCellDelegate {
-    func changeStatus(_ index: Int) {
-        viewModel.changeStatus(index: index)
+    func changeStatus(_ id: String) {
+        viewModel.changeStatus(id: id)
     }
     
-    func selectItem(_ index: Int) {
-        viewModel.showDetail(index: index)
+    func selectItem(_ id: String) {
+        viewModel.showDetailBy(id: id)
     }
 }
 

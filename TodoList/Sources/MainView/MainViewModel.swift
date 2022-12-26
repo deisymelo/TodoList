@@ -14,13 +14,13 @@ protocol MainViewModelProtocol {
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem?
     func addNewItemTap()
-    func showDetail(index: Int)
-    func changeStatus(index: Int)
+    func showDetailBy(id: String)
+    func changeStatus(id: String)
 }
 
 protocol MainViewModelNavigationDelegate {
     func addNewItemTap()
-    func showDetail(index: Int)
+    func showDetailBy(id: String)
 }
 
 protocol MainViewModelCoordinatorProtocol {
@@ -55,21 +55,23 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
         delegate?.addNewItemTap()
     }
     
-    func showDetail(index: Int) {
-        delegate?.showDetail(index: index)
+    func showDetailBy(id: String) {
+        delegate?.showDetailBy(id: id)
     }
     
-    func changeStatus(index: Int) {
-        coreData.updateStatus(index)
+    func changeStatus(id: String) {
+        coreData.updateStatus(id)
             .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {
-                case .failure(let error):
+                case .finished:
+                    self.loadItems()
+                case .failure:
+                    //TODO: display error view
                     break
-                default: break
                 }
             } receiveValue: { item in
-                self.itemList.value[index] = item
+                //self.itemList.value[index] = item
             }.store(in: &cancellables)
     }
 }

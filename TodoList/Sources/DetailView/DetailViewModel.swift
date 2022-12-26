@@ -16,16 +16,16 @@ class DetailViewModel: DetailViewModelProtocol {
     var itemDetails: Box<TodoItem>?
     var coreData: CoreDataManagerProtocol
     weak var delegate: DetailCoordinatorProtocol?
-    var index: Int?
+    var itemId: String?
     
-    init(coreData: CoreDataManagerProtocol, index: Int?) {
+    init(coreData: CoreDataManagerProtocol, itemId: String?) {
         self.coreData = coreData
-        self.index = index
+        self.itemId = itemId
     }
 
     func loadItem() {
-        guard let index = index,
-              let item = coreData.getItemBy(index) else {
+        guard let itemId = itemId,
+              let item = coreData.getItemBy(itemId) else {
             return
         }
         

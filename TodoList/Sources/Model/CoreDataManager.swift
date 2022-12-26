@@ -11,8 +11,8 @@ import Combine
 protocol CoreDataManagerProtocol {
     func saveItem(_ todoItem: TodoItem)
     func getItems() -> [TodoItem]
-    func getItemBy(_ index: Int) -> TodoItem?
-    func updateStatus(_ item: Int) -> AnyPublisher<TodoItem, Error> 
+    func getItemBy(_ id: String) -> TodoItem?
+    func updateStatus(_ id: String) -> AnyPublisher<TodoItem, Error>
 }
 
 final class CoreDataManager: CoreDataManagerProtocol {
@@ -30,19 +30,20 @@ final class CoreDataManager: CoreDataManagerProtocol {
         persistenContainer.viewContext
     }
     
-    private func getTodoItem(item: TodoItemEntity) -> TodoItem {
-        let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
-        let todoItem: TodoItem = TodoItem(title: item.title ?? "",
+    private func createTodoItemModel(item: TodoItemEntity) -> TodoItem {
+        let todoItem: TodoItem = TodoItem(id: item.id,
+                                          title: item.title ?? "",
                                           description: item.itemDescription ?? "",
-                                          status: status)
+                                          pending: item.pending)
         return todoItem
     }
     
     func saveItem(_ todoItem: TodoItem) {
         let entity = TodoItemEntity(context: context)
+        entity.setValue(UUID().uuidString, forKey: "id")
         entity.setValue(todoItem.title, forKey: "title")
         entity.setValue(todoItem.description, forKey: "itemDescription")
-        entity.setValue(todoItem.status.rawValue, forKey: "status")
+        entity.setValue(todoItem.pending, forKey: "pending")
         
         do {
             try context.save()
@@ -54,10 +55,12 @@ final class CoreDataManager: CoreDataManagerProtocol {
     func getItems() -> [TodoItem] {
         do {
             let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+            let sortDescriptor = NSSortDescriptor(key: "pending", ascending: false)
+            fetchRequest.sortDescriptors = [sortDescriptor]
             let list =  try context.fetch(fetchRequest)
             var todoList: [TodoItem] = []
             list.forEach { item in
-                todoList.append(getTodoItem(item: item))
+                todoList.append(createTodoItemModel(item: item))
             }
             
             return todoList
@@ -67,33 +70,39 @@ final class CoreDataManager: CoreDataManagerProtocol {
         }
     }
     
-    func getItemBy(_ index: Int) -> TodoItem? {
+    func getItemBy(_ id: String) -> TodoItem? {
         do {
             let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+            fetchRequest.predicate = NSPredicate(format: "id = %@", id)
             let list =  try context.fetch(fetchRequest)
-            let item = list[index]
-            return getTodoItem(item: item)
+            
+            guard let item = list.first else {
+                return nil
+            }
+            
+            return createTodoItemModel(item: item)
         } catch {
-            print("getItemBy index \(index): \(error)")
+            print("getItemBy id \(id): \(error)")
             return nil
         }
     }
     
-    func updateStatus(_ item: Int) -> AnyPublisher<TodoItem, Error> {
+    func updateStatus(_ id: String) -> AnyPublisher<TodoItem, Error> {
         Future { [context] promise in
             do {
                 try context.performAndWait {
                     let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
-                    let list =  try context.fetch(fetchRequest)
-                    let item = list[item]
+                    fetchRequest.predicate = NSPredicate(format: "id = %@", id)
                     
-                    if item.status == TodoStatus.pending.rawValue {
-                        item.status = TodoStatus.finished.rawValue
-                    } else {
-                        item.status = TodoStatus.pending.rawValue
+                    let list =  try context.fetch(fetchRequest)
+                    guard let item = list.first else {
+                        promise(.failure(CustomError.notFound))
+                        return
                     }
                     
-                    let todoItem = self.getTodoItem(item: item)
+                    item.pending = !item.pending
+                    
+                    let todoItem = self.createTodoItemModel(item: item)
                     
                     try context.save()
                     
@@ -101,7 +110,7 @@ final class CoreDataManager: CoreDataManagerProtocol {
                 }
                 
             } catch {
-                print("getItemBy index \(item): \(error)")
+                print("update index \(id): \(error)")
                 promise(.failure(error))
             }
             

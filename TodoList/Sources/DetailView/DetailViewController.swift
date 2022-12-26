@@ -97,7 +97,7 @@ class DetailViewController: UIViewController {
             
             strongSelf.titleLabel.text = item.title
             strongSelf.descriptionLabel.text = item.description
-            strongSelf.statusLabel.text = item.status.rawValue
+            strongSelf.statusLabel.text = item.pending ? "Pending" : "Finished"
         }
     }
 }
