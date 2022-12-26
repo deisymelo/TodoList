@@ -6,11 +6,13 @@
 //
 
 import CoreData
+import Combine
 
 protocol CoreDataManagerProtocol {
     func saveItem(_ todoItem: TodoItem)
     func getItems() -> [TodoItem]
     func getItemBy(_ index: Int) -> TodoItem?
+    func updateStatus(_ item: Int) -> AnyPublisher<TodoItem, Error> 
 }
 
 final class CoreDataManager: CoreDataManagerProtocol {
@@ -26,6 +28,14 @@ final class CoreDataManager: CoreDataManagerProtocol {
     
     var context: NSManagedObjectContext {
         persistenContainer.viewContext
+    }
+    
+    private func getTodoItem(item: TodoItemEntity) -> TodoItem {
+        let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
+        let todoItem: TodoItem = TodoItem(title: item.title ?? "",
+                                          description: item.itemDescription ?? "",
+                                          status: status)
+        return todoItem
     }
     
     func saveItem(_ todoItem: TodoItem) {
@@ -47,11 +57,7 @@ final class CoreDataManager: CoreDataManagerProtocol {
             let list =  try context.fetch(fetchRequest)
             var todoList: [TodoItem] = []
             list.forEach { item in
-                let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
-                let todoItem: TodoItem = TodoItem(title: item.title ?? "",
-                                                  description: item.itemDescription ?? "",
-                                                  status: status)
-                todoList.append(todoItem)
+                todoList.append(getTodoItem(item: item))
             }
             
             return todoList
@@ -66,15 +72,39 @@ final class CoreDataManager: CoreDataManagerProtocol {
             let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
             let list =  try context.fetch(fetchRequest)
             let item = list[index]
-            
-            let status = TodoStatus(rawValue: item.status ?? TodoStatus.pending.rawValue) ?? .pending
-            let todoItem: TodoItem = TodoItem(title: item.title ?? "",
-                                              description: item.itemDescription ?? "",
-                                              status: status)
-            return todoItem
+            return getTodoItem(item: item)
         } catch {
             print("getItemBy index \(index): \(error)")
             return nil
         }
+    }
+    
+    func updateStatus(_ item: Int) -> AnyPublisher<TodoItem, Error> {
+        Future { [context] promise in
+            do {
+                try context.performAndWait {
+                    let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+                    let list =  try context.fetch(fetchRequest)
+                    let item = list[item]
+                    
+                    if item.status == TodoStatus.pending.rawValue {
+                        item.status = TodoStatus.finished.rawValue
+                    } else {
+                        item.status = TodoStatus.pending.rawValue
+                    }
+                    
+                    let todoItem = self.getTodoItem(item: item)
+                    
+                    try context.save()
+                    
+                    promise(.success(todoItem))
+                }
+                
+            } catch {
+                print("getItemBy index \(item): \(error)")
+                promise(.failure(error))
+            }
+            
+        }.eraseToAnyPublisher()
     }
 }

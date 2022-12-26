@@ -86,7 +86,7 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -104,15 +104,20 @@ extension MainViewController: UITableViewDataSource {
             return UITableViewCell()
         }
        
-        cell.setData(item)
+        cell.setData(item, itemIndex: indexPath.row)
+        cell.delegate = self
         return cell
     }
     
 }
 
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.showDetail(index: indexPath.row)
+extension MainViewController: TodoItemCellDelegate {
+    func changeStatus(_ index: Int) {
+        viewModel.changeStatus(index: index)
+    }
+    
+    func selectItem(_ index: Int) {
+        viewModel.showDetail(index: index)
     }
 }
 

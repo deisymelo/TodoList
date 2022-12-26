@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol MainViewModelProtocol {
     var itemList: Box<[TodoItem]> { get set }
@@ -14,6 +15,7 @@ protocol MainViewModelProtocol {
     func getItemBy(_ indexPath: IndexPath) -> TodoItem?
     func addNewItemTap()
     func showDetail(index: Int)
+    func changeStatus(index: Int)
 }
 
 protocol MainViewModelNavigationDelegate {
@@ -28,6 +30,7 @@ protocol MainViewModelCoordinatorProtocol {
 class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
 
     var itemList: Box<[TodoItem]> = Box([])
+    private var cancellables = Set<AnyCancellable>()
     
     var numberOfRowsInSection: Int {
         itemList.value.count
@@ -54,5 +57,19 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     
     func showDetail(index: Int) {
         delegate?.showDetail(index: index)
+    }
+    
+    func changeStatus(index: Int) {
+        coreData.updateStatus(index)
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                    break
+                default: break
+                }
+            } receiveValue: { item in
+                self.itemList.value[index] = item
+            }.store(in: &cancellables)
     }
 }

@@ -15,7 +15,7 @@ enum TodoStatus: String {
 struct TodoItem {
     let title: String
     let description: String
-    let status: TodoStatus
+    var status: TodoStatus
     
     init(title: String,
          description: String,

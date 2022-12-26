@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol TodoItemCellDelegate: AnyObject {
+    func changeStatus(_ index: Int)
+    func selectItem(_ index: Int)
+}
+
 class TodoItemCell: UITableViewCell {
     
     private lazy var contentStackView: UIStackView = {
@@ -34,6 +39,33 @@ class TodoItemCell: UITableViewCell {
         return label
     }()
     
+    private var contentButton: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var changeStatusButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .blue
+        button.addTarget(self, action: #selector(changeStatus), for: .touchDown)
+        return button
+    }()
+    
+    private lazy var selectButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(selectItem), for: .touchDown)
+        return button
+    }()
+    
+    private var position: Int?
+    weak var delegate: TodoItemCellDelegate?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
@@ -48,24 +80,66 @@ class TodoItemCell: UITableViewCell {
         super.prepareForReuse()
         titleLabel.text = ""
         descriptionLabel.text = ""
+        changeStatusButton.setImage(UIImage(systemName: "circle"), for: .normal)
     }
     
     private func setupView() {
+        selectionStyle = .none
         contentStackView.addArrangedSubview(titleLabel)
         contentStackView.addArrangedSubview(descriptionLabel)
+        
+        contentButton.addSubview(changeStatusButton)
+        contentView.addSubview(contentButton)
         contentView.addSubview(contentStackView)
+        contentView.addSubview(selectButton)
         
         NSLayoutConstraint.activate([
+            contentButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            contentButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentButton.trailingAnchor.constraint(equalTo: contentStackView.leadingAnchor, constant: -16),
+            contentButton.widthAnchor.constraint(equalToConstant: 30),
+            
+            changeStatusButton.centerYAnchor.constraint(equalTo: contentButton.centerYAnchor),
+            changeStatusButton.centerXAnchor.constraint(equalTo: contentButton.centerXAnchor),
+            
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contentStackView.leadingAnchor.constraint(equalTo: contentButton.trailingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
+            selectButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            selectButton.leadingAnchor.constraint(equalTo: contentButton.trailingAnchor, constant: 16),
+            selectButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            selectButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     
-    func setData(_ data: TodoItem) {
+    func setData(_ data: TodoItem, itemIndex: Int) {
         titleLabel.text = data.title
         descriptionLabel.text = data.description
+        position = itemIndex
+        
+        let imageName = data.status == .pending ? "circle" : "circle.fill"
+        changeStatusButton.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+    
+    @objc func selectItem() {
+        guard let delegate = self.delegate,
+              let index = self.position else {
+            return
+        }
+        
+        delegate.selectItem(index)
+    }
+    
+    @objc func changeStatus() {
+        guard let delegate = self.delegate,
+              let index = self.position else {
+            return
+        }
+        
+        delegate.changeStatus(index)
     }
 }
 
