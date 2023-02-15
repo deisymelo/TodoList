@@ -18,7 +18,7 @@ protocol MainViewModelProtocol {
     func changeStatus(id: String)
 }
 
-protocol MainViewModelNavigationDelegate {
+protocol MainViewModelNavigationDelegate: AnyObject {
     func addNewItemTap()
     func showDetailBy(id: String)
 }
@@ -36,11 +36,11 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
         itemList.value.count
     }
     
-    var delegate: MainViewModelNavigationDelegate?
-    var coreData: CoreDataManagerProtocol
+    weak var delegate: MainViewModelNavigationDelegate?
+    private var coreData: CoreDataManagerProtocol
     
-    init() {
-        coreData = CoreDataManager()
+    init(coreData: CoreDataManagerProtocol) {
+        self.coreData = coreData
     }
     
     func loadItems() {
@@ -66,12 +66,13 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
                 switch result {
                 case .finished:
                     self.loadItems()
+                    break
                 case .failure:
                     //TODO: display error view
                     break
                 }
             } receiveValue: { item in
-                //self.itemList.value[index] = item
+                //TODO: use the item
             }.store(in: &cancellables)
     }
 }

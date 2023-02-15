@@ -12,12 +12,20 @@ class MainCoordinator: Coordinator<Void> {
     private var navigationController: UINavigationController
     weak var viewModel: MainViewModel?
     
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     override func start() {
-        let viewModel = MainViewModel()
+        let viewModel: MainViewModel
+        
+        if CommandLine.arguments.contains("UITests") {
+            viewModel = MainViewModel(coreData: CoreDataManagerMock())
+        } else {
+            viewModel = MainViewModel(coreData: CoreDataManager())
+        }
+        
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = MainViewController(viewModel: viewModel)

@@ -14,6 +14,11 @@ class MainViewController: UIViewController {
         let button: UIBarButtonItem = UIBarButtonItem(
             image: plusIcon, style: .plain, target: self, action: #selector(tappedAddItemButton))
         button.tintColor = .blue
+        
+        #if DEBUG
+        button.accessibilityIdentifier = "mainViewController.button.addItem"
+        #endif
+        
         return button
     }()
     
@@ -120,4 +125,36 @@ extension MainViewController: TodoItemCellDelegate {
         viewModel.showDetailBy(id: id)
     }
 }
+
+#if DEBUG
+extension MainViewController {
+    var testHooks: TestHooks {
+        return TestHooks(target: self)
+    }
+
+    struct TestHooks {
+        private let target: MainViewController
+
+        fileprivate init(target: MainViewController) {
+            self.target = target
+        }
+
+        var numberOfRowsInSection: Int {
+            target.viewModel.numberOfRowsInSection
+        }
+        
+        func tappedAddItemButton() {
+            target.tappedAddItemButton()
+        }
+        
+        func changeStatus(_ id: String) {
+            target.changeStatus(id)
+        }
+        
+        func selectItem(_ id: String) {
+            target.selectItem(id)
+        }
+    }
+}
+#endif
 

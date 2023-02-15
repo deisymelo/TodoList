@@ -64,6 +64,7 @@ class TodoItemCell: UITableViewCell {
     }()
     
     private var itemId: String?
+    private var imageName: String = "circle"
     weak var delegate: TodoItemCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -120,7 +121,7 @@ class TodoItemCell: UITableViewCell {
         descriptionLabel.text = data.description
         itemId = data.id
         
-        let imageName = data.pending ? "circle" : "circle.fill"
+        imageName = data.pending ? "circle" : "circle.fill"
         changeStatusButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
@@ -146,3 +147,43 @@ class TodoItemCell: UITableViewCell {
 extension TodoItemCell {
     static let cellName: String = "TodoItemCell"
 }
+
+#if DEBUG
+extension TodoItemCell {
+    var testHooks: TestHooks {
+        return TestHooks(target: self)
+    }
+
+    struct TestHooks {
+        private let target: TodoItemCell
+
+        fileprivate init(target: TodoItemCell) {
+            self.target = target
+        }
+
+        var titleLabel: String? {
+            target.titleLabel.text
+        }
+        
+        var descriptionLabel: String? {
+            target.descriptionLabel.text
+        }
+        
+        var itemId: String? {
+            target.itemId
+        }
+        
+        var imageName: String {
+            target.imageName
+        }
+        
+        func selectItem() {
+            target.selectItem()
+        }
+        
+        func changeStatus() {
+            target.changeStatus()
+        }
+    }
+}
+#endif

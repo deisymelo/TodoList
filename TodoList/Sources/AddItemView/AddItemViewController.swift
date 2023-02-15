@@ -29,6 +29,9 @@ class AddItemViewController: UIViewController {
         textField.frame.size.height = 20
         textField.placeholder = "Title"
         textField.borderStyle = .roundedRect
+        #if DEBUG
+        textField.accessibilityIdentifier = "addItemController.textField.title"
+        #endif
         return textField
     }()
     
@@ -37,6 +40,9 @@ class AddItemViewController: UIViewController {
         textField.frame.size.height = 20
         textField.placeholder = "Description"
         textField.borderStyle = .roundedRect
+        #if DEBUG
+        textField.accessibilityIdentifier = "addItemController.textField.description"
+        #endif
         return textField
     }()
     
@@ -52,6 +58,9 @@ class AddItemViewController: UIViewController {
               self.saveItem()
           }, for: .touchDown
         )
+        #if DEBUG
+        button.accessibilityIdentifier = "addItemController.button.save"
+        #endif
         return button
     }()
     
