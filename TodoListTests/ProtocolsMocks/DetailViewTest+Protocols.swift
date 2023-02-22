@@ -10,8 +10,10 @@ import XCTest
 
 class TestDetailViewModelProtocol: DetailViewModelProtocol {
     var itemDetails: Box<TodoItem>?
+    var didDisappearCalled: Bool = false
     
     func didDisappear() {
+        didDisappearCalled = true
     }
 }
 

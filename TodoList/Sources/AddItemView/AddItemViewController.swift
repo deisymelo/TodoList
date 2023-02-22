@@ -82,7 +82,7 @@ class AddItemViewController: UIViewController {
         setupView()
     }
     
-    func setNavigationBar() {
+    private func setNavigationBar() {
         navigationItem.title = "Add item"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -108,7 +108,7 @@ class AddItemViewController: UIViewController {
         ])
     }
     
-    private func saveItem() {
+    func saveItem() {
         if let title = titleTextField.text,
            let description = descriptionTextField.text,
            !title.isEmpty {
@@ -118,3 +118,32 @@ class AddItemViewController: UIViewController {
         }
     }
 }
+
+#if DEBUG
+extension AddItemViewController {
+    var testHooks: TestHooks {
+        return TestHooks(target: self)
+    }
+
+    struct TestHooks {
+        private let target: AddItemViewController
+
+        fileprivate init(target: AddItemViewController) {
+            self.target = target
+        }
+        
+        var titleTextField: UITextField {
+            target.titleTextField
+        }
+        
+        var descriptionTextField: UITextField {
+            target.descriptionTextField
+        }
+        
+        func saveItem() {
+            target.saveItem()
+        }
+    }
+}
+#endif
+

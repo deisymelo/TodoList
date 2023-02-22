@@ -7,7 +7,7 @@
 
 import XCTest
 
-class TodoListUITests: XCTestCase {
+class AddItemViewUITest: XCTestCase {
 
     var app: XCUIApplication!
     
@@ -31,6 +31,6 @@ class TodoListUITests: XCTestCase {
         textfieldDescription.tap()
         textfieldDescription.typeText("Mundo")
         button.tap()
-        addButton.waitForExistence(timeout: 2)
+        XCTAssertTrue(addButton.waitForExistence(timeout: 2))
     }
 }

@@ -21,6 +21,7 @@ protocol MainViewModelProtocol {
 protocol MainViewModelNavigationDelegate: AnyObject {
     func addNewItemTap()
     func showDetailBy(id: String)
+    func displayError(msn: String)
 }
 
 protocol MainViewModelCoordinatorProtocol {
@@ -68,7 +69,7 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
                     self.loadItems()
                     break
                 case .failure:
-                    //TODO: display error view
+                    self.delegate?.displayError(msn: "Item doesn't founded")
                     break
                 }
             } receiveValue: { item in

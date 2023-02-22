@@ -58,13 +58,13 @@ class MainViewController: UIViewController {
         setupBindings()
     }
     
-    func setNavigationBar() {
+    private func setNavigationBar() {
         navigationItem.rightBarButtonItem = addItemButton
         navigationItem.title = "TODO List"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    func setConstrains() {
+    private func setConstrains() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -73,13 +73,14 @@ class MainViewController: UIViewController {
         ])
     }
     
-    func setupBindings() {
+    private func setupBindings() {
         viewModel.itemList.bind { [weak self] list in
             guard let strongSelf = self else { return }
             
-            guard !list.isEmpty else {
-                //TODO: Display empty message
-                return
+            if list.count == 0 {
+                strongSelf.tableView.setEmptyMessage("There aren't elements")
+            } else {
+                strongSelf.tableView.restore()
             }
             
             strongSelf.tableView.reloadData()

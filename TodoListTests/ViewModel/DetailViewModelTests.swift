@@ -20,7 +20,7 @@ class DetailViewModelTests: XCTestCase {
         
     }
     
-    func testAddNewItemTap() {
+    func testLoadItem() {
         coreDataManager.itemsList = [
             TodoItem(id: "10", title: "Test 10", description: "test", pending: false),
             TodoItem(id: "20", title: "Test 20", description: "test", pending: true)

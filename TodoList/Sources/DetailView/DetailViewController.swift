@@ -101,3 +101,32 @@ class DetailViewController: UIViewController {
         }
     }
 }
+
+#if DEBUG
+extension DetailViewController {
+    var testHooks: TestHooks {
+        return TestHooks(target: self)
+    }
+
+    struct TestHooks {
+        private let target: DetailViewController
+
+        fileprivate init(target: DetailViewController) {
+            self.target = target
+        }
+
+        var titleLabel: String? {
+            target.titleLabel.text
+        }
+        
+        var descriptionLabel: String? {
+            target.descriptionLabel.text
+        }
+        
+        var statusLabel: String? {
+            target.statusLabel.text
+        }
+        
+    }
+}
+#endif

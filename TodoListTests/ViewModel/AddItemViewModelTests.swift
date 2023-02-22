@@ -29,4 +29,10 @@ class AddItemViewModelTests: XCTestCase {
         XCTAssertEqual(item?.id, newItem.id)
         XCTAssertTrue(addItemCoordinatorProtocol.additionHasBeenSuccess)
     }
+    
+    func testAddItemError() {
+        let message: String = "This is an error"
+        viewModel.addItemError(message)
+        XCTAssertEqual(addItemCoordinatorProtocol.errorMessage, message)
+    }
 }

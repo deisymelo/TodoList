@@ -27,7 +27,7 @@ class AddItemViewModel: AddItemViewModelProtocol {
     }
     
     func addItemError(_ msn: String) {
-        //Todo: Display error alert
+        delegate?.displayErrorView(message: msn)
     }
 }
 
