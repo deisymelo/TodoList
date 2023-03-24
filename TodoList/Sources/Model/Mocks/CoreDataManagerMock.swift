@@ -15,7 +15,13 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
     var itemsList: [TodoItem] = []
     
     func saveItem(_ todoItem: TodoItem) {
-        itemsList = [todoItem]
+        let id = "1"
+        let item = TodoItem(
+            id: id,
+            title: todoItem.title,
+            description: todoItem.description
+        )
+        itemsList = [item]
     }
     
     func getItems() -> [TodoItem] {
@@ -28,11 +34,17 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
     
     func updateStatus(_ id: String) -> AnyPublisher<TodoItem, Error> {
         updateStatusCheck = true
+        if let itemToEdit = itemsList.first(where: { $0.id == id }) {
+            item = itemToEdit
+            item?.pending = !itemToEdit.pending
+        }
+        
         if let error = error {
             return Fail<TodoItem, Error>(error: error).eraseToAnyPublisher()
         }
         
         if let item = item {
+            itemsList.removeAll()
             itemsList.append(item)
             return Just(item)
                 .setFailureType(to: Error.self)
@@ -41,4 +53,12 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
         
         return Empty<TodoItem, Error>().eraseToAnyPublisher()
     }
+}
+
+extension CoreDataManagerMock {
+   
+    func getListWithItems() -> [TodoItem] {
+        return [.init(title: "Item 1", description: "This is the item one!")]
+    }
+
 }

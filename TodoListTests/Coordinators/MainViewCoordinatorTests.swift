@@ -86,4 +86,24 @@ final class MainViewCoordinatorTests: XCTestCase {
         detailCoordinator?.closeView(success: true)
         XCTAssertTrue(mainCoordinator.childCoordinators.isEmpty)
     }
+    
+    func testDisplayError() {
+        let navigationController = UINavigationController()
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        
+        let mainCoordinator = MainCoordinator(
+            navigationController: navigationController,
+            coreData: coreData
+        )
+        
+        mainCoordinator.start()
+        mainCoordinator.displayError(msn: "this is an error")
+        
+        let alertView = navigationController.presentedViewController as? UIAlertController
+        XCTAssertNotNil(alertView, "should have an UIAlertController")
+        XCTAssertEqual(alertView?.title, "Error")
+        XCTAssertEqual(alertView?.message, "this is an error")
+        
+    }
 }

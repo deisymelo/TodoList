@@ -35,6 +35,7 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(TodoItemCell.self, forCellReuseIdentifier: TodoItemCell.cellName)
+        tableView.accessibilityIdentifier = "mainViewController.table"
         return tableView
     }()
     
@@ -109,7 +110,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
               let item = viewModel.getItemBy(indexPath) else {
             return UITableViewCell()
         }
-       
+        
+        cell.accessibilityIdentifier = TodoItemCell.cellName + "\(indexPath.row)"
         cell.setData(item)
         cell.delegate = self
         return cell

@@ -1,14 +1,13 @@
 //
-//  MainViewUITest.swift
+//  DetailViewUITests.swift
 //  TodoListUITests
 //
-//  Created by Deisy Melo on 20/02/23.
+//  Created by Deisy Melo on 13/03/23.
 //
 
 import XCTest
-@testable import TodoList
 
-final class MainViewUITest: XCTestCase {
+final class DetailViewUITests: XCTestCase {
 
     var app: XCUIApplication!
     
@@ -16,20 +15,9 @@ final class MainViewUITest: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments.append("UITests")
-        
     }
 
-    func testTableWithEmptyState() throws {
-        // UI tests must launch the application that they test.
-        app.launch()
-        let tableDescription = app.tables["mainViewController.table"]
-        let emptyStateLabel = tableDescription.staticTexts["tableView.emptyStateLabel"]
-        
-        XCTAssertTrue(emptyStateLabel.exists)
-        XCTAssertEqual(emptyStateLabel.label, "There aren't elements")
-    }
-    
-    func testChangeItemStatusFlow() throws {
+    func testItemDetailFlow() throws {
         // UI tests must launch the application that they test.
         app.launch()
         // mainView components
@@ -40,6 +28,11 @@ final class MainViewUITest: XCTestCase {
         let textfieldTitle = app.textFields["addItemController.textField.title"]
         let textfieldDescription = app.textFields["addItemController.textField.description"]
         let saveButton = app.buttons["addItemController.button.save"]
+        
+        // detailView components
+        let detailTitleLabel = app.staticTexts["detailView.lable.title"]
+        let detailDescriptionLabel = app.staticTexts["detailView.lable.description"]
+        let detailStatusLabel = app.staticTexts["detailView.lable.status"]
         
         //Open mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
@@ -61,15 +54,18 @@ final class MainViewUITest: XCTestCase {
         let todoItemCell = tableDescription.cells["TodoItemCell0"]
         XCTAssertTrue(todoItemCell.exists)
         
-        let statusButton = todoItemCell.buttons["TodoItemCell.button.status"]
-        XCTAssertTrue(statusButton.waitForExistence(timeout: 2))
+        let selectButton = todoItemCell.buttons["TodoItemCell.button.select"]
+        XCTAssertTrue(selectButton.waitForExistence(timeout: 2))
         
-        XCTAssertTrue(todoItemCell.buttons["circle"].exists)
-        XCTAssertFalse(todoItemCell.buttons["circle.fill"].exists)
+        selectButton.tap()
         
-        statusButton.tap()
+        //Open Detail view
+        XCTAssertTrue(detailTitleLabel.waitForExistence(timeout: 2))
+        XCTAssertTrue(detailDescriptionLabel.waitForExistence(timeout: 2))
+        XCTAssertTrue(detailStatusLabel.waitForExistence(timeout: 2))
         
-        XCTAssertFalse(todoItemCell.buttons["circle"].exists)
-        XCTAssertFalse(todoItemCell.buttons["circle.fill"].exists)
+        XCTAssertEqual(detailTitleLabel.label, "Item 1")
+        XCTAssertEqual(detailDescriptionLabel.label, "This is the item one!")
+        XCTAssertEqual(detailStatusLabel.label, "Pending")
     }
 }

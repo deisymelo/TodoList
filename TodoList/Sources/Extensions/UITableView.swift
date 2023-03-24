@@ -16,6 +16,7 @@ extension UITableView {
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()
+        messageLabel.accessibilityIdentifier = "tableView.emptyStateLabel"
 
         self.backgroundView = messageLabel
         self.separatorStyle = .none

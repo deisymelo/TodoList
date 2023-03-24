@@ -77,6 +77,16 @@ class MainViewModelTests: XCTestCase {
         viewModel.loadItems()
         XCTAssertEqual(viewModel.numberOfRowsInSection, 2)
     }
+    
+    func testUpdateStatusError() {
+        coreDataManager.error = Failure(message: "Item doesn't founded")
+        let expectation: XCTestExpectation = XCTestExpectation(description: "Wait until delegate respons")
+        mainViewModelNavigationDelegate.expectation = expectation
+        
+        viewModel.changeStatus(id: "2")
+        wait(for: [expectation], timeout: 1)
+        XCTAssertEqual(mainViewModelNavigationDelegate.errorMessage, "Item doesn't founded")
+    }
 
 }
 

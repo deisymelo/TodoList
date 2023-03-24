@@ -27,18 +27,21 @@ class DetailViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.frame.size.height = 20
+        label.accessibilityIdentifier = "detailView.lable.title"
         return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.frame.size.height = 20
+        label.accessibilityIdentifier = "detailView.lable.description"
         return label
     }()
     
     private lazy var statusLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.frame.size.height = 20
+        label.accessibilityIdentifier = "detailView.lable.status"
         return label
     }()
     

@@ -38,6 +38,8 @@ class TestMainViewModelNavigationDelegate: MainViewModelNavigationDelegate {
     var isAddNewItemTaped: Bool = false
     var isShowDetailByCalled: Bool = false
     var itemId: String = ""
+    var errorMessage: String = ""
+    var expectation: XCTestExpectation!
     
     func addNewItemTap() {
         isAddNewItemTaped.toggle()
@@ -46,6 +48,11 @@ class TestMainViewModelNavigationDelegate: MainViewModelNavigationDelegate {
     func showDetailBy(id: String) {
         isShowDetailByCalled.toggle()
         itemId = id
+    }
+    
+    func displayError(msn: String) {
+        errorMessage = msn
+        expectation.fulfill()
     }
 }
 

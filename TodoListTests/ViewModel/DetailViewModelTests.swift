@@ -38,6 +38,21 @@ class DetailViewModelTests: XCTestCase {
         XCTAssertEqual(itemFromCoreData?.title, itemFromViewModel?.title)
     }
     
+    func testLoadWrongItem() {
+        coreDataManager.itemsList = [
+            TodoItem(id: "10", title: "Test 10", description: "test", pending: false),
+            TodoItem(id: "20", title: "Test 20", description: "test", pending: true)
+        ]
+        
+        viewModel = DetailViewModel(coreData: coreDataManager, itemId: "100")
+        
+        viewModel.loadItem()
+        
+        let itemFromViewModel = viewModel.itemDetails?.value
+        
+        XCTAssertNil(itemFromViewModel, "This item doesn't exists")
+    }
+    
     func testCloseView() {
         viewModel = DetailViewModel(coreData: coreDataManager, itemId: "1")
         viewModel.delegate = detailCoordinatorProtocol

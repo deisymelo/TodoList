@@ -28,6 +28,7 @@ class TodoItemCell: UITableViewCell {
         label.font = UIFont(name: "System", size: 16)
         label.text = "Title"
         label.textColor = .darkGray
+        label.accessibilityIdentifier = "TodoItemCell.titleLabel"
         return label
     }()
     
@@ -36,6 +37,7 @@ class TodoItemCell: UITableViewCell {
         label.font = UIFont(name: "System", size: 14)
         label.text = "description"
         label.textColor = .lightGray
+        label.accessibilityIdentifier = "TodoItemCell.descriptionLabel"
         return label
     }()
     
@@ -51,6 +53,7 @@ class TodoItemCell: UITableViewCell {
         button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .blue
+        button.accessibilityIdentifier = "TodoItemCell.button.status"
         button.addTarget(self, action: #selector(changeStatus), for: .touchDown)
         return button
     }()
@@ -59,6 +62,7 @@ class TodoItemCell: UITableViewCell {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
+        button.accessibilityIdentifier = "TodoItemCell.button.select"
         button.addTarget(self, action: #selector(selectItem), for: .touchDown)
         return button
     }()
@@ -122,7 +126,10 @@ class TodoItemCell: UITableViewCell {
         itemId = data.id
         
         imageName = data.pending ? "circle" : "circle.fill"
-        changeStatusButton.setImage(UIImage(systemName: imageName), for: .normal)
+        let buttonImage = UIImage(systemName: imageName)
+        buttonImage?.accessibilityIdentifier = "\(imageName)"
+
+        changeStatusButton.setImage(buttonImage, for: .normal)
     }
     
     @objc func selectItem() {
