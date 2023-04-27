@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import IntentsUI
 
 class MainViewController: UIViewController {
     
@@ -57,6 +58,7 @@ class MainViewController: UIViewController {
         setNavigationBar()
         setConstrains()
         setupBindings()
+        donateIntent()
     }
     
     private func setNavigationBar() {
@@ -90,6 +92,14 @@ class MainViewController: UIViewController {
 
     @objc private func tappedAddItemButton() {
         viewModel.addNewItemTap()
+    }
+    
+    func donateIntent() {
+        let intent = TodoListIntent()
+        intent.suggestedInvocationPhrase = "Agrega un nuevo todo"
+        
+        let interaction = INInteraction(intent: intent, response: nil)
+        interaction.donate()
     }
 }
 

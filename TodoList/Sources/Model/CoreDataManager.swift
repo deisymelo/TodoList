@@ -15,9 +15,9 @@ protocol CoreDataManagerProtocol {
     func updateStatus(_ id: String) -> AnyPublisher<TodoItem, Error>
 }
 
-final class CoreDataManager: CoreDataManagerProtocol {
-    lazy var persistenContainer: NSPersistentContainer = {
-       let container = NSPersistentContainer(name: "TodoList")
+public final class CoreDataManager: CoreDataManagerProtocol {
+    public lazy var persistenContainer: NSPersistentContainer = {
+       let container = NSPersistentContainer(name: "TodoListDataBase")
         container.loadPersistentStores { _, error in
             if let error = error as? NSError {
                 fatalError("persistenContainer: \(error.userInfo)")
@@ -30,12 +30,19 @@ final class CoreDataManager: CoreDataManagerProtocol {
         persistenContainer.viewContext
     }
     
+    public init() {}
+    
     private func createTodoItemModel(item: TodoItemEntity) -> TodoItem {
         let todoItem: TodoItem = TodoItem(id: item.id,
                                           title: item.title ?? "",
                                           description: item.itemDescription ?? "",
                                           pending: item.pending)
         return todoItem
+    }
+    
+    public func saveItem(title: String) {
+        let todoItem = TodoItem(title: title, description: "")
+        saveItem(todoItem)
     }
     
     func saveItem(_ todoItem: TodoItem) {
