@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataManager
 
 protocol AddItemViewModelProtocol: AnyObject {
     func addNewItemTap(item: TodoItem)

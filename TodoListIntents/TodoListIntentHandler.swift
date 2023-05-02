@@ -7,26 +7,23 @@
 
 import Foundation
 import Intents
-import TodoList
+import DataManager
 
 class TodoListIntentHandler: NSObject, TodoListIntentHandling {
+    func resolveTitle(for intent: TodoListIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
+        if let title = intent.title, !title.isEmpty {
+            completion(.success(with: title))
+        } else {
+            completion(.needsValue())
+        }
+    }
     
     func handle(intent: TodoListIntent, completion: @escaping (TodoListIntentResponse) -> Void) {
         guard let title = intent.title else {
-            completion(TodoListIntentResponse(code: .failure, userActivity: nil))
+            completion(TodoListIntentResponse(code: .empty, userActivity: nil))
             return
         }
         CoreDataManager().saveItem(title: title)
-        completion(TodoListIntentResponse(code: .success, userActivity: nil))
-    }
-    
-    func resolveTitle(for intent: TodoListIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
-        guard let title = intent.title,
-              title.isEmpty else {
-            completion(.needsValue()) // Indica que el parámetro está incompleto
-            return
-        }
-        
-        completion(.success(with: title))
+        completion(TodoListIntentResponse.success(title: title))
     }
 }

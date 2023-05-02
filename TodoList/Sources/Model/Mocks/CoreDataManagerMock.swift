@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataManager
 
 final class CoreDataManagerMock: CoreDataManagerProtocol {
     var error: Error?
@@ -14,25 +15,25 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
     var updateStatusCheck: Bool = false
     var itemsList: [TodoItem] = []
     
-    func saveItem(_ todoItem: TodoItem) {
+    public func saveItem(_ item: Item) {
         let id = "1"
         let item = TodoItem(
             id: id,
-            title: todoItem.title,
-            description: todoItem.description
+            title: item.title,
+            description: item.description
         )
         itemsList = [item]
     }
     
-    func getItems() -> [TodoItem] {
+    public func getItems() -> [Item] {
         return itemsList
     }
     
-    func getItemBy(_ id: String) -> TodoItem? {
+    public func getItemBy(_ id: String) -> Item? {
         return itemsList.first{ $0.id == id }
     }
     
-    func updateStatus(_ id: String) -> AnyPublisher<TodoItem, Error> {
+   public func updateStatus(_ id: String) -> AnyPublisher<Item, Error> {
         updateStatusCheck = true
         if let itemToEdit = itemsList.first(where: { $0.id == id }) {
             item = itemToEdit
@@ -40,7 +41,7 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
         }
         
         if let error = error {
-            return Fail<TodoItem, Error>(error: error).eraseToAnyPublisher()
+            return Fail<Item, Error>(error: error).eraseToAnyPublisher()
         }
         
         if let item = item {
@@ -51,7 +52,7 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
                 .eraseToAnyPublisher()
         }
         
-        return Empty<TodoItem, Error>().eraseToAnyPublisher()
+        return Empty<Item, Error>().eraseToAnyPublisher()
     }
 }
 

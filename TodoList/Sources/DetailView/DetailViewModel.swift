@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataManager
 
 protocol DetailViewModelProtocol: AnyObject {
     var itemDetails: Box<TodoItem>? { get set }
@@ -29,7 +30,7 @@ class DetailViewModel: DetailViewModelProtocol {
             return
         }
         
-        itemDetails = Box(item)
+        itemDetails = Box(.init(item))
     }
     
     func didDisappear() {

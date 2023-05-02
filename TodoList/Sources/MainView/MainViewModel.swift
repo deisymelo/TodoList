@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataManager
 
 protocol MainViewModelProtocol {
     var itemList: Box<[TodoItem]> { get set }
@@ -45,7 +46,7 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     }
     
     func loadItems() {
-        itemList.value = coreData.getItems()
+        itemList.value = coreData.getItems().map { .init($0) }
     }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem? {
