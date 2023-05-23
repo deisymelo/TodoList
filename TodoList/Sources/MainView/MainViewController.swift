@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import IntentsUI
+import Intents
 
 class MainViewController: UIViewController {
     
@@ -97,7 +97,7 @@ class MainViewController: UIViewController {
     func donateIntent() {
         let intent = TodoListIntent()
         intent.suggestedInvocationPhrase = "Agrega un nuevo todo"
-        
+
         let interaction = INInteraction(intent: intent, response: nil)
         interaction.donate()
     }

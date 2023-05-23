@@ -1,19 +1,20 @@
 //
-//  TodoItem.swift
-//  TodoList
+//  File.swift
+//  
 //
-//  Created by Deisy Melo on 21/10/22.
+//  Created by Andres Rojas on 2/05/23.
 //
 
 import Foundation
-import DataManager
 
-struct TodoItem: Item {
+import Foundation
+
+struct DataItem: Item {
     let id: String?
     let title: String
     let description: String
     var pending: Bool
-    
+
     init(
         id: String? = nil,
         title: String,
@@ -24,13 +25,6 @@ struct TodoItem: Item {
         self.title = title
         self.description = description
         self.pending = pending
-    }
-
-    init(_ item: Item) {
-        self.id = item.id
-        self.title = item.title
-        self.description = item.description
-        self.pending = item.pending
     }
 }
 
