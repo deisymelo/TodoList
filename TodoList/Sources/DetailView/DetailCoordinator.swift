@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import DataManager
 
 protocol DetailCoordinatorProtocol: AnyObject {
     func closeView(success: Bool)

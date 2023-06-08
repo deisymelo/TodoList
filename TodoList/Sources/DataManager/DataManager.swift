@@ -10,13 +10,10 @@ public protocol CoreDataManagerProtocol {
 
 public final class CoreDataManager: CoreDataManagerProtocol {
     public lazy var persistenContainer: NSPersistentContainer = {
-        guard
-            let objectModelURL = Bundle.module.url(forResource: "TodoListDataBase", withExtension: "momd"),
-            let objectModel = NSManagedObjectModel(contentsOf: objectModelURL)
-        else {
-            fatalError("Failed to retrieve the object model")
-        }
-       let container = NSPersistentContainer(name: "TodoList", managedObjectModel: objectModel)
+        let storeURL = URL.storeURL(for: "group.zemoga.TodoList", databaseName: "TodoList")
+        let storeDescription = NSPersistentStoreDescription(url: storeURL)
+        let container = NSPersistentContainer(name: "TodoList")
+        container.persistentStoreDescriptions = [storeDescription]
         container.loadPersistentStores { _, error in
             if let error = error as? NSError {
                 fatalError("persistenContainer: \(error.userInfo)")
@@ -127,4 +124,15 @@ public final class CoreDataManager: CoreDataManagerProtocol {
 
 public enum DataError: Error {
     case notFound
+}
+
+public extension URL {
+    /// Returns a URL for the given app group and database pointing to the sqlite database.
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+    }
 }

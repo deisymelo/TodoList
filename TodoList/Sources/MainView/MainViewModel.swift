@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import DataManager
 
 protocol MainViewModelProtocol {
     var itemList: Box<[TodoItem]> { get set }

@@ -7,7 +7,6 @@
 
 import Foundation
 import Intents
-import DataManager
 
 class TodoListIntentHandler: NSObject, TodoListIntentHandling {
     func resolveTitle(for intent: TodoListIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
