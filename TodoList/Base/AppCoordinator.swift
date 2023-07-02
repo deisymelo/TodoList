@@ -12,11 +12,11 @@ import DataManager
 class Coordinator<T> {
 
     var childCoordinators: [Any] = []
-    var onFinish: ((T)->Void)?
+    var onFinish: ((T) -> Void)?
     
     func start() {}
     
-    //Informa que el coordinator finalizó
+    // Informa que el coordinator finalizó
     func finish(result: T) {
         onFinish?(result)
     }

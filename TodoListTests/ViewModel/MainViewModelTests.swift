@@ -44,7 +44,6 @@ class MainViewModelTests: XCTestCase {
         XCTAssertEqual(list.last?.pending, true)
     }
     
-    
     func testGetItemByPosition() {
         coreDataManager.itemsList = [
             TodoItem(id: "1", title: "Test", description: "test", pending: false),
@@ -89,5 +88,3 @@ class MainViewModelTests: XCTestCase {
     }
 
 }
-
-

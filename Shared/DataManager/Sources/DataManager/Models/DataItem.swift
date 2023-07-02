@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct DataItem: Item {
     let id: String?
     let title: String

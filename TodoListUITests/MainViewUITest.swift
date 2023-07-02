@@ -41,19 +41,19 @@ final class MainViewUITest: XCTestCase {
         let textfieldDescription = app.textFields["addItemController.textField.description"]
         let saveButton = app.buttons["addItemController.button.save"]
         
-        //Open mainView
+        // Open mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         addButton.tap()
         
-        //Open AddItemView
+        // Open AddItemView
         textfieldTitle.tap()
         textfieldTitle.typeText("Item 1")
         textfieldDescription.tap()
         textfieldDescription.typeText("This is the item one!")
         saveButton.tap()
         
-        //Check if the new item is displaying on mainView
+        // Check if the new item is displaying on mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.cells.count == 1)

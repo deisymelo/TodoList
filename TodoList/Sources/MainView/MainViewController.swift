@@ -72,7 +72,7 @@ class MainViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -80,7 +80,7 @@ class MainViewController: UIViewController {
         viewModel.itemList.bind { [weak self] list in
             guard let strongSelf = self else { return }
             
-            if list.count == 0 {
+            if list.isEmpty {
                 strongSelf.tableView.setEmptyMessage("There aren't elements")
             } else {
                 strongSelf.tableView.restore()
@@ -170,4 +170,3 @@ extension MainViewController {
     }
 }
 #endif
-

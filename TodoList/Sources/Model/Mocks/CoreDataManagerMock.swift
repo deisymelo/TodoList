@@ -30,7 +30,7 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
     }
     
     public func getItemBy(_ id: String) -> Item? {
-        return itemsList.first{ $0.id == id }
+        return itemsList.first { $0.id == id }
     }
     
    public func updateStatus(_ id: String) -> AnyPublisher<Item, Error> {

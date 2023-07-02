@@ -61,4 +61,3 @@ class DetailViewModelTests: XCTestCase {
         XCTAssertTrue(detailCoordinatorProtocol.closeViewCalled)
     }
 }
-

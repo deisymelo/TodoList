@@ -30,20 +30,20 @@ class AddItemViewUITest: XCTestCase {
         let textfieldDescription = app.textFields["addItemController.textField.description"]
         let saveButton = app.buttons["addItemController.button.save"]
         
-        //Open mainView
+        // Open mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         XCTAssertTrue(emptyStateLabel.exists)
         addButton.tap()
         
-        //Open AddItemView
+        // Open AddItemView
         textfieldTitle.tap()
         textfieldTitle.typeText("Hola")
         textfieldDescription.tap()
         textfieldDescription.typeText("Mundo")
         saveButton.tap()
         
-        //Check if the new item is displaying on mainView
+        // Check if the new item is displaying on mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         XCTAssertFalse(emptyStateLabel.exists)
@@ -72,11 +72,11 @@ class AddItemViewUITest: XCTestCase {
         // addItemView components
         let saveButton = app.buttons["addItemController.button.save"]
         
-        //Open mainView
+        // Open mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         addButton.tap()
         
-        //Try to add an item without information
+        // Try to add an item without information
         saveButton.tap()
         let alertButton = app.alerts.buttons["alertView.button.close"]
         XCTAssertTrue(alertButton.waitForExistence(timeout: 2))

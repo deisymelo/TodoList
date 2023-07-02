@@ -68,13 +68,10 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
                 switch result {
                 case .finished:
                     self.loadItems()
-                    break
                 case .failure:
                     self.delegate?.displayError(msn: "Item doesn't founded")
-                    break
                 }
-            } receiveValue: { item in
-                //TODO: use the item
+            } receiveValue: { _ in
             }.store(in: &cancellables)
     }
 }

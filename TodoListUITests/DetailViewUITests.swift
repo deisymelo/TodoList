@@ -34,19 +34,19 @@ final class DetailViewUITests: XCTestCase {
         let detailDescriptionLabel = app.staticTexts["detailView.lable.description"]
         let detailStatusLabel = app.staticTexts["detailView.lable.status"]
         
-        //Open mainView
+        // Open mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         addButton.tap()
         
-        //Open AddItemView
+        // Open AddItemView
         textfieldTitle.tap()
         textfieldTitle.typeText("Item 1")
         textfieldDescription.tap()
         textfieldDescription.typeText("This is the item one!")
         saveButton.tap()
         
-        //Check if the new item is displaying on mainView
+        // Check if the new item is displaying on mainView
         XCTAssertTrue(addButton.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.waitForExistence(timeout: 2))
         XCTAssertTrue(tableDescription.cells.count == 1)
@@ -59,7 +59,7 @@ final class DetailViewUITests: XCTestCase {
         
         selectButton.tap()
         
-        //Open Detail view
+        // Open Detail view
         XCTAssertTrue(detailTitleLabel.waitForExistence(timeout: 2))
         XCTAssertTrue(detailDescriptionLabel.waitForExistence(timeout: 2))
         XCTAssertTrue(detailStatusLabel.waitForExistence(timeout: 2))

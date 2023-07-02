@@ -32,18 +32,18 @@ public final class CoreDataManager: CoreDataManagerProtocol {
     public init() {}
 
     private func createDataItemModel(item: TodoItemEntity) -> DataItem {
-        let DataItem: DataItem = DataItem(
+        let dataItem: DataItem = DataItem(
             id: item.id,
             title: item.title ?? "",
             description: item.itemDescription ?? "",
             pending: item.pending
         )
-        return DataItem
+        return dataItem
     }
 
     public func saveItem(title: String) {
-        let DataItem = DataItem(title: title, description: "new desc")
-        saveItem(DataItem)
+        let dataItem = DataItem(title: title, description: "new desc")
+        saveItem(dataItem)
     }
 
     public func saveItem(_ item: Item) {
