@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import DataManager
 
 protocol DetailViewModelProtocol: AnyObject {
     var itemDetails: Box<TodoItem>? { get set }

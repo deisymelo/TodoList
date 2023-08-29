@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import DataManager
 
 struct TodoItem: Item {
     let id: String?

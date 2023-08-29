@@ -25,7 +25,3 @@ struct DataItem: Item {
         self.pending = pending
     }
 }
-
-struct Failure: Error {
-    let message: String
-}

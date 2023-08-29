@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import DataManager
 
 final class CoreDataManagerMock: CoreDataManagerProtocol {
     var error: Error?

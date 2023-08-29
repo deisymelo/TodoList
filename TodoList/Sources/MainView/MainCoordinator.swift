@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import DataManager
 
 class MainCoordinator: Coordinator<Void> {
     
