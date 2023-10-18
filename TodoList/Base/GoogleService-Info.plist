@@ -26,5 +26,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:621113398065:ios:e7c495734631c7ec171610</string>
+	<key>DATABASE_URL</key>
+	<string>https://todolist-102fa-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
