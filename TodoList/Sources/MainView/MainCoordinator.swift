@@ -11,16 +11,17 @@ class MainCoordinator: Coordinator<Void> {
     
     private var navigationController: UINavigationController
     weak var viewModel: MainViewModel?
-    var coreData: CoreDataManagerProtocol
+    var coreData: DataSourceProtocol = LocalDataSource()
+    var repository: RepositoryProtocol
     
-    init(navigationController: UINavigationController, coreData: CoreDataManagerProtocol) {
+    init(navigationController: UINavigationController, repository: RepositoryProtocol) {
         self.navigationController = navigationController
-        self.coreData = coreData
+        self.repository = repository
     }
     
     override func start() {
         let viewModel: MainViewModel
-        viewModel = MainViewModel(coreData: coreData)
+        viewModel = MainViewModel(repository: repository)
         
         self.viewModel = viewModel
         self.viewModel?.delegate = self
@@ -35,7 +36,7 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
     func addNewItemTap() {
         let addItemCoordinator = AddItemCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: repository
         )
         
         addItemCoordinator.onFinish = { [weak self] result in
@@ -51,7 +52,7 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
     func showDetailBy(id: String) {
         let detailCoordinator = DetailCoordinator(
             navigationController: navigationController,
-            coreData: coreData,
+            repository: repository,
             itemId: id
         )
         

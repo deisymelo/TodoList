@@ -12,12 +12,12 @@ final class MainViewCoordinatorTests: XCTestCase {
     
     var coordinator: MainCoordinator!
     var window: UIWindow!
-    var coreData: CoreDataManagerMock!
+    var coreData: DataManagerMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         window = .init(frame: UIScreen.main.bounds)
-        coreData = CoreDataManagerMock()
+        coreData = DataManagerMock()
     }
     
     func testStartMainView() {
@@ -27,7 +27,7 @@ final class MainViewCoordinatorTests: XCTestCase {
         
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: coreData
         )
         
         mainCoordinator.start()
@@ -47,7 +47,7 @@ final class MainViewCoordinatorTests: XCTestCase {
         
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: coreData
         )
         
         mainCoordinator.start()
@@ -73,7 +73,7 @@ final class MainViewCoordinatorTests: XCTestCase {
         
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: coreData
         )
         
         mainCoordinator.start()
@@ -94,7 +94,7 @@ final class MainViewCoordinatorTests: XCTestCase {
         
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: coreData
         )
         
         mainCoordinator.start()

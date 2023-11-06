@@ -10,12 +10,12 @@ import XCTest
 
 class DetailViewModelTests: XCTestCase {
 
-    var coreDataManager: CoreDataManagerMock!
+    var coreDataManager: DataManagerMock!
     var viewModel: DetailViewModel!
     var detailCoordinatorProtocol: TestDetailCoordinatorProtocol!
     
     override func setUpWithError() throws {
-        coreDataManager = CoreDataManagerMock()
+        coreDataManager = DataManagerMock()
         detailCoordinatorProtocol = TestDetailCoordinatorProtocol()
         
     }
@@ -26,7 +26,7 @@ class DetailViewModelTests: XCTestCase {
             TodoItem(id: "20", title: "Test 20", description: "test", pending: true)
         ]
         
-        viewModel = DetailViewModel(coreData: coreDataManager, itemId: "10")
+        viewModel = DetailViewModel(repository: coreDataManager, itemId: "10")
         
         viewModel.loadItem()
         
@@ -44,7 +44,7 @@ class DetailViewModelTests: XCTestCase {
             TodoItem(id: "20", title: "Test 20", description: "test", pending: true)
         ]
         
-        viewModel = DetailViewModel(coreData: coreDataManager, itemId: "100")
+        viewModel = DetailViewModel(repository: coreDataManager, itemId: "100")
         
         viewModel.loadItem()
         
@@ -54,7 +54,7 @@ class DetailViewModelTests: XCTestCase {
     }
     
     func testCloseView() {
-        viewModel = DetailViewModel(coreData: coreDataManager, itemId: "1")
+        viewModel = DetailViewModel(repository: coreDataManager, itemId: "1")
         viewModel.delegate = detailCoordinatorProtocol
         viewModel.didDisappear()
         

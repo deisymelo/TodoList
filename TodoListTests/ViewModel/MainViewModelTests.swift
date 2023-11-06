@@ -10,14 +10,14 @@ import XCTest
 
 class MainViewModelTests: XCTestCase {
 
-    var coreDataManager: CoreDataManagerMock!
+    var coreDataManager: DataManagerMock!
     var viewModel: MainViewModel!
     var mainViewModelNavigationDelegate: TestMainViewModelNavigationDelegate!
     
     override func setUpWithError() throws {
-        coreDataManager = CoreDataManagerMock()
+        coreDataManager = DataManagerMock()
         mainViewModelNavigationDelegate = TestMainViewModelNavigationDelegate()
-        viewModel = MainViewModel(coreData: coreDataManager)
+        viewModel = MainViewModel(repository: coreDataManager)
         viewModel.delegate = mainViewModelNavigationDelegate
     }
     

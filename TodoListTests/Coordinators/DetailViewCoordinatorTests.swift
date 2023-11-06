@@ -12,12 +12,12 @@ final class DetailViewCoordinatorTests: XCTestCase {
 
     var coordinator: DetailCoordinator!
     var window: UIWindow!
-    var coreData: CoreDataManagerMock!
+    var coreData: DataManagerMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         window = .init(frame: UIScreen.main.bounds)
-        coreData = CoreDataManagerMock()
+        coreData = DataManagerMock()
     }
     
     func testStartMainView() {
@@ -32,7 +32,7 @@ final class DetailViewCoordinatorTests: XCTestCase {
         
         let detailCoordinator = DetailCoordinator(
             navigationController: navigationController,
-            coreData: coreData,
+            repository: coreData,
             itemId: "1"
         )
         

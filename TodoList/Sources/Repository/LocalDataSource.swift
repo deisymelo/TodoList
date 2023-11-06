@@ -1,14 +1,7 @@
 import Combine
 import CoreData
 
-public protocol CoreDataManagerProtocol {
-    func saveItem(_ item: Item)
-    func getItems() -> [Item]
-    func getItemBy(_ id: String) -> Item?
-    func updateStatus(_ id: String) -> AnyPublisher<Item, Error>
-}
-
-public final class CoreDataManager: CoreDataManagerProtocol {
+public final class LocalDataSource: DataSourceProtocol {
     public lazy var persistenContainer: NSPersistentContainer = {
         let storeURL = URL.storeURL(for: "group.zemoga.TodoList", databaseName: "TodoList")
         let storeDescription = NSPersistentStoreDescription(url: storeURL)

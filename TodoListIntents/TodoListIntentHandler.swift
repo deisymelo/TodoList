@@ -22,7 +22,7 @@ class TodoListIntentHandler: NSObject, TodoListIntentHandling {
             completion(TodoListIntentResponse(code: .empty, userActivity: nil))
             return
         }
-        CoreDataManager().saveItem(title: title)
+        LocalDataSource().saveItem(title: title)
         completion(TodoListIntentResponse.success(title: title))
     }
 }

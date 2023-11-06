@@ -14,18 +14,18 @@ protocol DetailViewModelProtocol: AnyObject {
 
 class DetailViewModel: DetailViewModelProtocol {
     var itemDetails: Box<TodoItem>?
-    var coreData: CoreDataManagerProtocol
+    var repository: RepositoryProtocol
     weak var delegate: DetailCoordinatorProtocol?
     var itemId: String?
     
-    init(coreData: CoreDataManagerProtocol, itemId: String?) {
-        self.coreData = coreData
+    init(repository: RepositoryProtocol, itemId: String?) {
+        self.repository = repository
         self.itemId = itemId
     }
 
     func loadItem() {
         guard let itemId = itemId,
-              let item = coreData.getItemBy(itemId) else {
+              let item = repository.getItemBy(itemId) else {
             return
         }
         

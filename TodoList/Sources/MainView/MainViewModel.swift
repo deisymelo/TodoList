@@ -38,14 +38,14 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     }
     
     weak var delegate: MainViewModelNavigationDelegate?
-    private var coreData: CoreDataManagerProtocol
+    private var repository: RepositoryProtocol
     
-    init(coreData: CoreDataManagerProtocol) {
-        self.coreData = coreData
+    init(repository: RepositoryProtocol) {
+        self.repository = repository
     }
     
     func loadItems() {
-        itemList.value = coreData.getItems().map { .init($0) }
+        itemList.value = repository.getItems().map { .init($0) }
     }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem? {
@@ -61,7 +61,7 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     }
     
     func changeStatus(id: String) {
-        coreData.updateStatus(id)
+        repository.updateStatus(id)
             .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {

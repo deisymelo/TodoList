@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class CoreDataManagerMock: CoreDataManagerProtocol {
+final class DataManagerMock: RepositoryProtocol {
     var error: Error?
     var item: TodoItem?
     var updateStatusCheck: Bool = false
@@ -55,7 +55,7 @@ final class CoreDataManagerMock: CoreDataManagerProtocol {
     }
 }
 
-extension CoreDataManagerMock {
+extension DataManagerMock {
    
     func getListWithItems() -> [TodoItem] {
         return [.init(title: "Item 1", description: "This is the item one!")]

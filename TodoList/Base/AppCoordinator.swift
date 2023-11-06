@@ -31,17 +31,20 @@ final class AppCoordinator: Coordinator<Void> {
     
     override func start() {
         let navigationController = UINavigationController()
-        var coreData: CoreDataManagerProtocol
+        var repository: RepositoryProtocol
         
         if CommandLine.arguments.contains("UITests") {
-            coreData = CoreDataManagerMock()
+            repository = DataManagerMock()
         } else {
-            coreData = CoreDataManager()
+            repository = DataSourceRepository(
+                localDataSource: LocalDataSource(),
+                remoteDataSource: LocalDataSource()
+            )
         }
         
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: repository
         )
         childCoordinators.append(mainCoordinator)
         mainCoordinator.start()

@@ -17,15 +17,15 @@ class AddItemCoordinator: Coordinator<Bool> {
     private var navigationController: UINavigationController
     var viewModel: AddItemViewModel?
     weak var viewController: AddItemViewController?
-    var coreData: CoreDataManagerProtocol
+    var repository: RepositoryProtocol
     
-    init(navigationController: UINavigationController, coreData: CoreDataManagerProtocol) {
+    init(navigationController: UINavigationController, repository: RepositoryProtocol) {
         self.navigationController = navigationController
-        self.coreData = coreData
+        self.repository = repository
     }
     
     override func start() {
-        let viewModel = AddItemViewModel(coreData: coreData)
+        let viewModel = AddItemViewModel(repository: repository)
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = AddItemViewController(viewModel: viewModel)

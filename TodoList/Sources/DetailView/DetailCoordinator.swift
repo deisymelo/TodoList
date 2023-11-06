@@ -17,18 +17,18 @@ class DetailCoordinator: Coordinator<Bool> {
     var viewModel: DetailViewModel?
     var itemId: String?
     weak var viewController: DetailViewController?
-    var coreData: CoreDataManagerProtocol
+    var repository: RepositoryProtocol
     
     init(navigationController: UINavigationController,
-         coreData: CoreDataManagerProtocol,
+         repository: RepositoryProtocol,
          itemId: String) {
         self.navigationController = navigationController
         self.itemId = itemId
-        self.coreData = coreData
+        self.repository = repository
     }
     
     override func start() {
-        let viewModel = DetailViewModel(coreData: coreData, itemId: itemId)
+        let viewModel = DetailViewModel(repository: repository, itemId: itemId)
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = DetailViewController(viewModel: viewModel)

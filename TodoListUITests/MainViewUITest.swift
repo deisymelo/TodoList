@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import TodoList
 
 final class MainViewUITest: XCTestCase {
 

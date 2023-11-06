@@ -12,12 +12,12 @@ final class AddItemCoordinatorTests: XCTestCase {
 
     var coordinator: AddItemCoordinator!
     var window: UIWindow!
-    var coreData: CoreDataManagerMock!
+    var coreData: DataManagerMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         window = .init(frame: UIScreen.main.bounds)
-        coreData = CoreDataManagerMock()
+        coreData = DataManagerMock()
     }
     
     func testStartMainView() {
@@ -27,7 +27,7 @@ final class AddItemCoordinatorTests: XCTestCase {
         
         let addItemCoordinator = AddItemCoordinator(
             navigationController: navigationController,
-            coreData: coreData
+            repository: coreData
         )
         
         addItemCoordinator.start()

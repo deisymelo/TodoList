@@ -10,14 +10,14 @@ import XCTest
 
 class AddItemViewModelTests: XCTestCase {
 
-    var coreDataManager: CoreDataManagerMock!
+    var coreDataManager: DataManagerMock!
     var viewModel: AddItemViewModel!
     var addItemCoordinatorProtocol: TestAddItemCoordinatorProtocol!
     
     override func setUpWithError() throws {
-        coreDataManager = CoreDataManagerMock()
+        coreDataManager = DataManagerMock()
         addItemCoordinatorProtocol = TestAddItemCoordinatorProtocol()
-        viewModel = AddItemViewModel(coreData: coreDataManager)
+        viewModel = AddItemViewModel(repository: coreDataManager)
         viewModel.delegate = addItemCoordinatorProtocol
     }
     
