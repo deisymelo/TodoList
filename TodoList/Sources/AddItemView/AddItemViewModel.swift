@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol AddItemViewModelProtocol: AnyObject {
     func addNewItemTap(item: TodoItem)
@@ -16,6 +17,7 @@ class AddItemViewModel: AddItemViewModelProtocol {
     
     weak var delegate: AddItemCoordinatorProtocol?
     var repository: RepositoryProtocol
+    private var cancellables = Set<AnyCancellable>()
     
     init(repository: RepositoryProtocol) {
         self.repository = repository
@@ -23,7 +25,11 @@ class AddItemViewModel: AddItemViewModelProtocol {
 
     func addNewItemTap(item: TodoItem) {
         repository.saveItem(item)
-        delegate?.closeView(success: true)
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                self.delegate?.closeView(success: true)
+            } receiveValue: { _ in
+            }.store(in: &cancellables)
     }
     
     func addItemError(_ msn: String) {

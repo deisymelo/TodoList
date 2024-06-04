@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol DetailViewModelProtocol: AnyObject {
     var itemDetails: Box<TodoItem>? { get set }
@@ -17,6 +18,7 @@ class DetailViewModel: DetailViewModelProtocol {
     var repository: RepositoryProtocol
     weak var delegate: DetailCoordinatorProtocol?
     var itemId: String?
+    private var cancellables = Set<AnyCancellable>()
     
     init(repository: RepositoryProtocol, itemId: String?) {
         self.repository = repository
@@ -24,12 +26,17 @@ class DetailViewModel: DetailViewModelProtocol {
     }
 
     func loadItem() {
-        guard let itemId = itemId,
-              let item = repository.getItemBy(itemId) else {
+        guard let itemId = itemId else {
             return
         }
         
-        itemDetails = Box(.init(item))
+        repository.getItemBy(itemId)
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+            } receiveValue: { item in
+                guard let item = item else { return }
+                self.itemDetails = Box(.init(item))
+            }.store(in: &cancellables)
     }
     
     func didDisappear() {

@@ -67,4 +67,18 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
     func displayError(msn: String) {
         navigationController.displayError(msn)
     }
+    
+    func logOutNavigation() {
+        navigationController.dismiss(animated: false)
+        
+        let mainCoordinator = MainCoordinator(
+            navigationController: navigationController,
+            repository: repository
+        )
+        childCoordinators.append(mainCoordinator)
+        mainCoordinator.start()
+        
+        UIWindow(frame: UIScreen.main.bounds).rootViewController = navigationController
+        UIWindow(frame: UIScreen.main.bounds).makeKeyAndVisible()
+    }
 }

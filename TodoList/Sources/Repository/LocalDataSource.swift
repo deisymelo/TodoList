@@ -2,6 +2,7 @@ import Combine
 import CoreData
 
 public final class LocalDataSource: DataSourceProtocol {
+
     public lazy var persistenContainer: NSPersistentContainer = {
         let storeURL = URL.storeURL(for: "group.zemoga.TodoList", databaseName: "TodoList")
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
@@ -36,52 +37,60 @@ public final class LocalDataSource: DataSourceProtocol {
         saveItem(dataItem)
     }
 
-    public func saveItem(_ item: Item) {
-        do {
-            let entity = TodoItemEntity(context: context)
-            entity.setValue(UUID().uuidString, forKey: "id")
-            entity.setValue(item.title, forKey: "title")
-            entity.setValue(item.description, forKey: "itemDescription")
-            entity.setValue(item.pending, forKey: "pending")
-            try context.save()
-        } catch {
-            print("saveItem: \(error)")
-        }
+    public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {
+        Future { [context] promise in
+            do {
+                let entity = TodoItemEntity(context: context)
+                entity.setValue(UUID().uuidString, forKey: "id")
+                entity.setValue(item.title, forKey: "title")
+                entity.setValue(item.description, forKey: "itemDescription")
+                entity.setValue(item.pending, forKey: "pending")
+                try context.save()
+                promise(.success(true))
+            } catch {
+                print("saveItem: \(error)")
+                promise(.failure(error))
+            }
+        }.eraseToAnyPublisher()
     }
 
-    public func getItems() -> [Item] {
-        do {
-            let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
-            let sortDescriptor = NSSortDescriptor(key: "pending", ascending: false)
-            fetchRequest.sortDescriptors = [sortDescriptor]
-            let list =  try context.fetch(fetchRequest)
-            var todoList: [DataItem] = []
-            list.forEach { item in
-                todoList.append(createDataItemModel(item: item))
-            }
+    public func getItems() -> AnyPublisher<[Item], Error> {
+        Future { [context] promise in
+            do {
+                let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+                let sortDescriptor = NSSortDescriptor(key: "pending", ascending: false)
+                fetchRequest.sortDescriptors = [sortDescriptor]
+                let list =  try context.fetch(fetchRequest)
+                var todoList: [DataItem] = []
+                list.forEach { item in
+                    todoList.append(self.createDataItemModel(item: item))
+                }
 
-            return todoList
-        } catch {
-            print("getItems: \(error)")
-            return []
-        }
+                return promise(.success(todoList))
+            } catch {
+                return promise(.success([]))
+            }
+        }.eraseToAnyPublisher()
     }
 
-    public func getItemBy(_ id: String) -> Item? {
-        do {
-            let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
-            fetchRequest.predicate = NSPredicate(format: "id = %@", id)
-            let list =  try context.fetch(fetchRequest)
+    public func getItemBy(_ id: String) -> AnyPublisher<Item?, Error> {
+        Future { [context] promise in
+            do {
+                let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+                fetchRequest.predicate = NSPredicate(format: "id = %@", id)
+                let list =  try context.fetch(fetchRequest)
 
-            guard let item = list.first else {
-                return nil
+                guard let item = list.first else {
+                    return promise(.success(nil))
+                }
+
+                return promise(.success(self.createDataItemModel(item: item)))
+            } catch {
+                print("getItemBy id \(id): \(error)")
+                return promise(.success(nil))
             }
-
-            return createDataItemModel(item: item)
-        } catch {
-            print("getItemBy id \(id): \(error)")
-            return nil
-        }
+        }.eraseToAnyPublisher()
+        
     }
 
     public func updateStatus(_ id: String) -> AnyPublisher<Item, Error> {
@@ -115,9 +124,7 @@ public final class LocalDataSource: DataSourceProtocol {
     }
 }
 
-public enum DataError: Error {
-    case notFound
-}
+
 
 public extension URL {
     /// Returns a URL for the given app group and database pointing to the sqlite database.

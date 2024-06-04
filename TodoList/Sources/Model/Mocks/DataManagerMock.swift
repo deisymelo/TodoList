@@ -14,7 +14,7 @@ final class DataManagerMock: RepositoryProtocol {
     var updateStatusCheck: Bool = false
     var itemsList: [TodoItem] = []
     
-    public func saveItem(_ item: Item) {
+    public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {
         let id = "1"
         let item = TodoItem(
             id: id,
@@ -22,14 +22,21 @@ final class DataManagerMock: RepositoryProtocol {
             description: item.description
         )
         itemsList = [item]
+        return Just(true)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
-    public func getItems() -> [Item] {
-        return itemsList
+    public func getItems() -> AnyPublisher<[Item], Error> {
+        return Just(itemsList)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
-    public func getItemBy(_ id: String) -> Item? {
-        return itemsList.first { $0.id == id }
+    public func getItemBy(_ id: String) -> AnyPublisher<Item?, Error> {
+        return Just(itemsList.first { $0.id == id })
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
    public func updateStatus(_ id: String) -> AnyPublisher<Item, Error> {
@@ -52,6 +59,18 @@ final class DataManagerMock: RepositoryProtocol {
         }
         
         return Empty<Item, Error>().eraseToAnyPublisher()
+    }
+    
+    func signup(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
+        Future { promise in
+            promise(.success(nil))
+        }.eraseToAnyPublisher()
+    }
+    
+    func login(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
+        Future { promise in
+            promise(.success(nil))
+        }.eraseToAnyPublisher()
     }
 }
 

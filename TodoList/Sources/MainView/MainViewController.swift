@@ -23,6 +23,19 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    lazy var logOutButton: UIBarButtonItem = {
+        let plusIcon = UIImage(systemName: "rectangle.portrait.and.arrow.forward")
+        let button: UIBarButtonItem = UIBarButtonItem(
+            image: plusIcon, style: .plain, target: self, action: #selector(tappedlogOutButton))
+        button.tintColor = .blue
+        
+        #if DEBUG
+        button.accessibilityIdentifier = "mainViewController.button.addItem"
+        #endif
+        
+        return button
+    }()
+    
     private lazy var viewContent: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +105,10 @@ class MainViewController: UIViewController {
 
     @objc private func tappedAddItemButton() {
         viewModel.addNewItemTap()
+    }
+    
+    @objc private func tappedlogOutButton() {
+        viewModel.logOut()
     }
     
     func donateIntent() {

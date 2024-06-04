@@ -16,6 +16,7 @@ protocol MainViewModelProtocol {
     func addNewItemTap()
     func showDetailBy(id: String)
     func changeStatus(id: String)
+    func logOut()
 }
 
 protocol MainViewModelNavigationDelegate: AnyObject {
@@ -45,7 +46,12 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     }
     
     func loadItems() {
-        itemList.value = repository.getItems().map { .init($0) }
+        repository.getItems()
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+            } receiveValue: { items in
+                self.itemList.value = items.map { .init($0) }
+            }.store(in: &cancellables)
     }
     
     func getItemBy(_ indexPath: IndexPath) -> TodoItem? {
@@ -72,5 +78,9 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
                 }
             } receiveValue: { _ in
             }.store(in: &cancellables)
+    }
+    
+    func logOut() {
+        
     }
 }
