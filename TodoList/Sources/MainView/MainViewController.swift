@@ -75,7 +75,7 @@ class MainViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        navigationItem.rightBarButtonItem = addItemButton
+        navigationItem.rightBarButtonItems = [logOutButton, addItemButton]
         navigationItem.title = "TODO List"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -108,7 +108,9 @@ class MainViewController: UIViewController {
     }
     
     @objc private func tappedlogOutButton() {
-        viewModel.logOut()
+        Task {
+            await viewModel.logOut()
+        }
     }
     
     func donateIntent() {

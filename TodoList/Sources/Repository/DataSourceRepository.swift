@@ -8,6 +8,7 @@ import Foundation
 import Combine
 
 protocol DataSourceProtocol {
+    var userId: String? { get set }
     func saveItem(_ item: Item) -> AnyPublisher<Bool, Error>
     func getItems() -> AnyPublisher<[Item], Error>
     func getItemBy(_ id: String) -> AnyPublisher<Item?, Error>
@@ -16,30 +17,36 @@ protocol DataSourceProtocol {
 
 public enum DataError: Error {
     case notFound
-    case errorLogin
+    case userError
     case errorSignUp
+    case errorLogin
 }
 
 final class DataSourceRepository: RepositoryProtocol {
     
-    let remoteDataSource: DataSourceProtocol?
+    var remoteDataSource: DataSourceProtocol?
     let localDataSource: DataSourceProtocol
+    let userSession: UserSession
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(localDataSource: DataSourceProtocol, remoteDataSource: DataSourceProtocol? =  nil) {
+    init(localDataSource: DataSourceProtocol, 
+         remoteDataSource: DataSourceProtocol? =  nil,
+         userSession: UserSession) {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
+        self.userSession = userSession
     }
     
     public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {
         Future { promise in
-            guard let remote = self.remoteDataSource else {
+            guard var remote = self.remoteDataSource else {
                 _ = self.localDataSource.saveItem(item)
                 promise(.success(true))
                 return
             }
             
+            remote.userId = self.userSession.getCurrentUser()
             remote.saveItem(item)
                 .receive(on: DispatchQueue.main)
                 .sink { result in
@@ -54,10 +61,11 @@ final class DataSourceRepository: RepositoryProtocol {
     
     public func getItems() -> AnyPublisher<[Item], Error> {
         Future { promise in
-            guard let remote = self.remoteDataSource else {
+            guard var remote = self.remoteDataSource else {
                 return promise(.success([]))
             }
             
+            remote.userId = self.userSession.getCurrentUser()
             remote.getItems()
                 .receive(on: DispatchQueue.main)
                 .sink { _ in
@@ -71,45 +79,16 @@ final class DataSourceRepository: RepositoryProtocol {
     }
     
     public func getItemBy(_ id: String) -> AnyPublisher<Item?, Error> {
-        guard let remote = remoteDataSource else {
+        guard var remote = remoteDataSource else {
             return localDataSource.getItemBy(id)
         }
         
+        remote.userId = self.userSession.getCurrentUser()
         return remote.getItemBy(id)
     }
     
     public func updateStatus(_ id: String) -> AnyPublisher<Item, Error> {
         return localDataSource.updateStatus(id)
     }
-    
-//    public func signup(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
-//        Future { promise in
-//            guard let remote = self.remoteDataSource else {
-//                return promise(.success(nil))
-//            }
-//            
-//            remote.signup(email: email, pass: pass)
-//                .receive(on: DispatchQueue.main)
-//                .sink { _ in
-//                } receiveValue: { user in
-//                    promise(.success(user))
-//                }.store(in: &self.cancellables)
-//        }.eraseToAnyPublisher()
-//    }
-//    
-//    public func login(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
-//        Future { promise in
-//            guard let remote = self.remoteDataSource else {
-//                return promise(.success(nil))
-//            }
-//            
-//            remote.login(email: email, pass: pass)
-//                .receive(on: DispatchQueue.main)
-//                .sink { _ in
-//                } receiveValue: { user in
-//                    promise(.success(user))
-//                }.store(in: &self.cancellables)
-//        }.eraseToAnyPublisher()
-//    }
     
 }

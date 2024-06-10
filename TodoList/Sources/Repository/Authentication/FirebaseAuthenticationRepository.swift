@@ -8,11 +8,23 @@
 import Combine
 import FirebaseAuth
 
-class FirebaseAuthenticationRepository: AuthenticationProtocol {
-    func signup(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
+class FirebaseAuthenticationRepository: AuthenticationProtocol, UserSession {
+    
+    func logout() async throws {
+        do {
+          try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+    }
+    
+    func getCurrentUser() -> String? {
+        Auth.auth().currentUser?.uid
+    }
+    
+    func signup(email: String, pass: String) -> AnyPublisher<DataUser, Error> {
         Future { promise in
-            Auth.auth().createUser(withEmail: email, password: pass) { [weak self] authResult, error in
-                guard let strongSelf = self else { return }
+            Auth.auth().createUser(withEmail: email, password: pass) { authResult, error in
                 guard let authResult = authResult else {
                     promise(.failure(error ?? DataError.errorSignUp))
                     return
@@ -26,10 +38,9 @@ class FirebaseAuthenticationRepository: AuthenticationProtocol {
         }.eraseToAnyPublisher()
     }
     
-    func login(email: String, pass: String) -> AnyPublisher<DataUser?, Error> {
+    func login(email: String, pass: String) -> AnyPublisher<DataUser, Error> {
         Future { promise in
-            Auth.auth().signIn(withEmail: email, password: pass) { [weak self] authResult, error in
-              guard let strongSelf = self else { return }
+            Auth.auth().signIn(withEmail: email, password: pass) { authResult, error in
                 if authResult != nil {
                     let user = DataUser(id: authResult?.user.uid ?? "",
                                         name: authResult?.user.displayName ?? "")
@@ -37,7 +48,7 @@ class FirebaseAuthenticationRepository: AuthenticationProtocol {
                     promise(.success(user))
                 } else {
                     
-                    promise(.failure(error ?? DataError.errorLogin))
+                    promise(.failure(DataError.errorLogin))
                 }
             }
         }.eraseToAnyPublisher()

@@ -10,6 +10,7 @@ import UIKit
 protocol AuthenticationCoordinatorProtocol: AnyObject {
     func loginSuccess()
     func signUpDidTap()
+    func displayError(msn: String)
 }
 
 class LoginCoordinator: Coordinator<Void> {
@@ -30,11 +31,15 @@ class LoginCoordinator: Coordinator<Void> {
         self.viewModel?.delegate = self
         let viewController = LoginViewController(viewModel: viewModel)
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        navigationController.setViewControllers([viewController], animated: true)
     }
 }
 
 extension LoginCoordinator: AuthenticationCoordinatorProtocol {
+    func displayError(msn: String) {
+        navigationController.displayError(msn)
+    }
+    
     func signUpDidTap() {
         let signUpCoordinator = SignUpCoordinator(
             navigationController: navigationController,

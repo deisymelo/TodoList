@@ -31,11 +31,11 @@ class LoginViewModel: LoginViewModelProtocol {
         
         repository.login(email: user, pass: pass)
             .receive(on: DispatchQueue.main)
-            .sink { _ in
+            .sink { completionState in
+                if case .failure(let error) = completionState {
+                    self.delegate?.displayError(msn: error.localizedDescription)
+                }
             } receiveValue: { user in
-                // guardar userID
-                //Si hay un error mostrarlo en pantalla
-                //storeUserInKeyChain()
                 self.delegate?.loginSuccess()
             }.store(in: &cancellables)
     }

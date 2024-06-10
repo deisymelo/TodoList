@@ -64,6 +64,8 @@
 		64A4659829A445EC00A504C4 /* MainViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A4659729A445EC00A504C4 /* MainViewCoordinatorTests.swift */; };
 		64A4659A29A466D300A504C4 /* AddItemCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A4659929A466D300A504C4 /* AddItemCoordinatorTests.swift */; };
 		64A4659C29A468DE00A504C4 /* DetailViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A4659B29A468DE00A504C4 /* DetailViewCoordinatorTests.swift */; };
+		64AFD51E2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
+		64AFD51F2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64B0101B2966278600D18A99 /* DataManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B0101A2966278600D18A99 /* DataManagerMock.swift */; };
 		64B649EF295A3D72005A92B4 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B649EE295A3D72005A92B4 /* CustomError.swift */; };
 		64BB6B2F2BFFF26400C3D0E8 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
@@ -842,6 +844,7 @@
 			files = (
 				3461A48E2A2FA72C00B00520 /* TodoList.xcdatamodeld in Sources */,
 				64E77A072AF94B80009EEB75 /* DataSourceRepository.swift in Sources */,
+				64AFD51E2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */,
 				646CC84C2A9DA6040063A39A /* DataItem.swift in Sources */,
 				34E4C3182A01B1590030D038 /* IntentsDefinition.intentdefinition in Sources */,
 				640C6B842BFABB280024DDF5 /* DataUser.swift in Sources */,
@@ -864,6 +867,7 @@
 				64E77A082AF94B81009EEB75 /* DataSourceRepository.swift in Sources */,
 				646CC84B2A9DA6010063A39A /* Item.swift in Sources */,
 				646CC84D2A9DA6040063A39A /* DataItem.swift in Sources */,
+				64AFD51F2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */,
 				64E77A0A2AF94B96009EEB75 /* RepositoryProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

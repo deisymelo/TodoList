@@ -2,7 +2,8 @@ import Combine
 import CoreData
 
 public final class LocalDataSource: DataSourceProtocol {
-
+    var userId: String?
+    
     public lazy var persistenContainer: NSPersistentContainer = {
         let storeURL = URL.storeURL(for: "group.zemoga.TodoList", databaseName: "TodoList")
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
@@ -34,7 +35,7 @@ public final class LocalDataSource: DataSourceProtocol {
 
     public func saveItem(title: String) {
         let dataItem = DataItem(title: title, description: "new desc")
-        saveItem(dataItem)
+        _ = saveItem(dataItem)
     }
 
     public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {

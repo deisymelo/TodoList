@@ -9,6 +9,11 @@ import Foundation
 import Combine
 
 protocol AuthenticationProtocol: AnyObject {
-    func signup(email: String, pass: String) -> AnyPublisher<DataUser?, Error>
-    func login(email: String, pass: String) -> AnyPublisher<DataUser?, Error>
+    func signup(email: String, pass: String) -> AnyPublisher<DataUser, Error>
+    func login(email: String, pass: String) -> AnyPublisher<DataUser, Error>
+}
+
+protocol UserSession: AnyObject {
+    func logout() async throws
+    func getCurrentUser() -> String?
 }

@@ -16,13 +16,14 @@ protocol MainViewModelProtocol {
     func addNewItemTap()
     func showDetailBy(id: String)
     func changeStatus(id: String)
-    func logOut()
+    func logOut() async
 }
 
 protocol MainViewModelNavigationDelegate: AnyObject {
     func addNewItemTap()
     func showDetailBy(id: String)
     func displayError(msn: String)
+    func logOutNavigation()
 }
 
 protocol MainViewModelCoordinatorProtocol {
@@ -40,9 +41,11 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
     
     weak var delegate: MainViewModelNavigationDelegate?
     private var repository: RepositoryProtocol
+    private var userSession: UserSession
     
-    init(repository: RepositoryProtocol) {
+    init(repository: RepositoryProtocol, userSession: UserSession) {
         self.repository = repository
+        self.userSession = userSession
     }
     
     func loadItems() {
@@ -80,7 +83,14 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
             }.store(in: &cancellables)
     }
     
-    func logOut() {
-        
+    func logOut() async {
+        do {
+            try await userSession.logout()
+            DispatchQueue.main.async {
+                self.delegate?.logOutNavigation()
+            }
+        } catch {
+            self.delegate?.displayError(msn: "log out failed")
+        }
     }
 }

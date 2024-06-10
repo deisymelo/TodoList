@@ -26,6 +26,7 @@ final class AppCoordinator: Coordinator<Void> {
     var window: UIWindow
     let navigationController = UINavigationController()
     var repository: RepositoryProtocol
+    private let userSession: UserSession = FirebaseAuthenticationRepository()
     
     init(window: UIWindow) {
         self.window = window
@@ -35,27 +36,31 @@ final class AppCoordinator: Coordinator<Void> {
         } else {
             repository = DataSourceRepository(
                 localDataSource: LocalDataSource(),
-                remoteDataSource: RemoteDataSource()
+                remoteDataSource: RemoteDataSource(), 
+                userSession: userSession
             )
         }
-        
     }
     
     override func start() {
-        //Validar si la sesion está abierta
-        
-        var coordintor: Coordinator<Void>
-        
-        coordintor = LoginCoordinator(
+        if userSession.getCurrentUser() != nil {
+            openHomePage()
+        } else {
+            openAutenticationPage()
+        }
+    }
+    
+    func openAutenticationPage() {
+        let coordinator = LoginCoordinator(
             navigationController: navigationController,
             repository: FirebaseAuthenticationRepository()
         )
-        childCoordinators.append(coordintor)
-        coordintor.start()
         
-        coordintor.onFinish = { [weak self] _ in
+        childCoordinators.append(coordinator)
+        coordinator.start()
+        
+        coordinator.onFinish = { [weak self] _ in
             guard let self = self else { return }
-            
             self.openHomePage()
         }
         
@@ -64,16 +69,20 @@ final class AppCoordinator: Coordinator<Void> {
     }
     
     func openHomePage() {
-        navigationController.dismiss(animated: false)
-        
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            repository: repository
+            repository: repository, 
+            userSession: userSession
         )
         childCoordinators.append(mainCoordinator)
         mainCoordinator.start()
         
-        UIWindow(frame: UIScreen.main.bounds).rootViewController = navigationController
-        UIWindow(frame: UIScreen.main.bounds).makeKeyAndVisible()
+        mainCoordinator.onFinish = { [weak self] _ in
+            guard let self = self else { return }
+            self.openAutenticationPage()
+        }
+        
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
     }
 }

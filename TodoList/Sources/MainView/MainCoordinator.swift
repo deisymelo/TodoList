@@ -13,15 +13,19 @@ class MainCoordinator: Coordinator<Void> {
     weak var viewModel: MainViewModel?
     var coreData: DataSourceProtocol = LocalDataSource()
     var repository: RepositoryProtocol
+    var userSession: UserSession
     
-    init(navigationController: UINavigationController, repository: RepositoryProtocol) {
+    init(navigationController: UINavigationController, 
+         repository: RepositoryProtocol,
+         userSession: UserSession) {
         self.navigationController = navigationController
         self.repository = repository
+        self.userSession = userSession
     }
     
     override func start() {
         let viewModel: MainViewModel
-        viewModel = MainViewModel(repository: repository)
+        viewModel = MainViewModel(repository: repository, userSession: userSession)
         
         self.viewModel = viewModel
         self.viewModel?.delegate = self
@@ -69,16 +73,6 @@ extension MainCoordinator: MainViewModelNavigationDelegate {
     }
     
     func logOutNavigation() {
-        navigationController.dismiss(animated: false)
-        
-        let mainCoordinator = MainCoordinator(
-            navigationController: navigationController,
-            repository: repository
-        )
-        childCoordinators.append(mainCoordinator)
-        mainCoordinator.start()
-        
-        UIWindow(frame: UIScreen.main.bounds).rootViewController = navigationController
-        UIWindow(frame: UIScreen.main.bounds).makeKeyAndVisible()
+        finish(result: ())
     }
 }

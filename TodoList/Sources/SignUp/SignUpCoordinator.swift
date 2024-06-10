@@ -15,6 +15,7 @@ enum SignUpStatus {
 protocol SignUpCoordinatorProtocol: AnyObject {
     func signUpSuccess()
     func didDisappear()
+    func displayError(msn: String)
 }
 
 class SignUpCoordinator: Coordinator<SignUpStatus> {
@@ -40,6 +41,10 @@ class SignUpCoordinator: Coordinator<SignUpStatus> {
 }
 
 extension SignUpCoordinator: SignUpCoordinatorProtocol {
+    func displayError(msn: String) {
+        navigationController.displayError(msn)
+    }
+    
     func signUpSuccess() {
         finish(result: .success)
     }

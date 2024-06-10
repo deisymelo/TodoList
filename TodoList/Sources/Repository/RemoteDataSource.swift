@@ -11,25 +11,46 @@ import FirebaseAuth
 
 public class RemoteDataSource: DataSourceProtocol {
     
+    var userId: String?
     let firestoreDataBase = Firestore.firestore()
-    private let collectionName = "TodosList"
+    private let collectionName = "TodosListByUser"
+    private let subcollectionName = "TodosList"
     
     public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {
         Future { promise in
+            guard let userId = self.userId else {
+                promise(.failure(DataError.userError))
+                return
+            }
+            
             let dataItem: [String: Any] = [
                 "itemDescription": item.description,
                 "pending": true,
                 "title": item.title
             ]
             
-            self.firestoreDataBase.collection(self.collectionName).document().setData(dataItem)
+            self.firestoreDataBase
+                .collection(self.collectionName)
+                .document(userId)
+                .collection(self.subcollectionName)
+                .document()
+                .setData(dataItem)
+            
             promise(.success(true))
         }.eraseToAnyPublisher()
     }
     
     public func getItems() -> AnyPublisher<[Item], Error> {
         Future { promise in
-            let docRef = self.firestoreDataBase.collection(self.collectionName)
+            guard let userId = self.userId else {
+                promise(.failure(DataError.userError))
+                return
+            }
+            
+            let docRef = self.firestoreDataBase
+                .collection(self.collectionName)
+                .document(userId)
+                .collection(self.subcollectionName)
 
             docRef.getDocuments { (query, err) in
                 guard let query = query else {
@@ -59,9 +80,17 @@ public class RemoteDataSource: DataSourceProtocol {
     
     public func getItemBy(_ id: String) -> AnyPublisher<Item?, Error> {
         Future { promise in
-            let docRef = self.firestoreDataBase.collection(self.collectionName)
+            guard let userId = self.userId else {
+                promise(.failure(DataError.userError))
+                return
+            }
+            
+            let docRef = self.firestoreDataBase
+                .collection(self.collectionName)
+                .document(userId)
+                .collection(self.subcollectionName)
 
-            docRef.document(id).getDocument { document, error in
+            docRef.document(id).getDocument { document, _ in
                 guard let document = document,
                       let data = document.data() else {
                     return promise(.success(nil))

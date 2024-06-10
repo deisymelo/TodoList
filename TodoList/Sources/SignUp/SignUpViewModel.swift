@@ -31,7 +31,10 @@ class SignUpViewModel: SignUpViewModelProtocol {
         
         repository.signup(email: email, pass: pass)
             .receive(on: DispatchQueue.main)
-            .sink { _ in
+            .sink { completionState in
+                if case .failure(let error) = completionState {
+                    self.delegate?.displayError(msn: error.localizedDescription)
+                }
             } receiveValue: { user in
                 self.delegate?.signUpSuccess()
             }.store(in: &cancellables)
@@ -56,4 +59,3 @@ class SignUpViewModel: SignUpViewModelProtocol {
         // auto fill del formulario
     }
 }
-
