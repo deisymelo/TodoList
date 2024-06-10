@@ -32,7 +32,3 @@ struct TodoItem: Item {
         self.pending = item.pending
     }
 }
-
-struct Failure: Error {
-    let message: String
-}

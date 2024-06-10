@@ -67,7 +67,6 @@
 		64AFD51E2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64AFD51F2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64B0101B2966278600D18A99 /* DataManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B0101A2966278600D18A99 /* DataManagerMock.swift */; };
-		64B649EF295A3D72005A92B4 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B649EE295A3D72005A92B4 /* CustomError.swift */; };
 		64BB6B2F2BFFF26400C3D0E8 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64BB6B322BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B312BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift */; };
 		64BC2033290302C00032BEBE /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BC2032290302C00032BEBE /* AppCoordinator.swift */; };
@@ -192,7 +191,6 @@
 		64A4659929A466D300A504C4 /* AddItemCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCoordinatorTests.swift; sourceTree = "<group>"; };
 		64A4659B29A468DE00A504C4 /* DetailViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		64B0101A2966278600D18A99 /* DataManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerMock.swift; sourceTree = "<group>"; };
-		64B649EE295A3D72005A92B4 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProtocol.swift; sourceTree = "<group>"; };
 		64BB6B312BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthenticationRepository.swift; sourceTree = "<group>"; };
 		64BC2032290302C00032BEBE /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -468,6 +466,29 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
+		64AFD5222C1685F100FCF1B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				643F51C6293ED9F0003B1AFC /* DetailView */,
+				64ED3A3D29148597002B9CF1 /* AddItemView */,
+				6422E8982902002700990A4B /* MainView */,
+				6459AAEE2C0EA005000E35D9 /* SignUp */,
+				64568C962BE8385B008C8269 /* Login */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		64AFD5232C16860800FCF1B5 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				64ED28332AF87DF500AD81CD /* RepositoryProtocol.swift */,
+				64ED28352AF8827D00AD81CD /* DataSourceRepository.swift */,
+				646CC8412A9DA5A10063A39A /* LocalDataSource.swift */,
+				64F2CFF32AF9AB4F00344A52 /* RemoteDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		64B010192966277400D18A99 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,7 +512,6 @@
 				64B010192966277400D18A99 /* Mocks */,
 				643587712909E54A00D59F7C /* Box.swift */,
 				64BC203529034D4C0032BEBE /* TodoItem.swift */,
-				64B649EE295A3D72005A92B4 /* CustomError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -499,14 +519,10 @@
 		64BC203C29035CC30032BEBE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6459AAEE2C0EA005000E35D9 /* SignUp */,
-				64568C962BE8385B008C8269 /* Login */,
+				64AFD5222C1685F100FCF1B5 /* Views */,
 				64C97FB02AF1DD4800CB33AB /* Repository */,
 				643F4E9B29D4E2AD00C5D114 /* Definitions */,
 				64CCDDBF29A66EE700A13F90 /* Extensions */,
-				643F51C6293ED9F0003B1AFC /* DetailView */,
-				64ED3A3D29148597002B9CF1 /* AddItemView */,
-				6422E8982902002700990A4B /* MainView */,
 				64BC203429034D3B0032BEBE /* Model */,
 			);
 			path = Sources;
@@ -515,12 +531,9 @@
 		64C97FB02AF1DD4800CB33AB /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				64AFD5232C16860800FCF1B5 /* DataSource */,
 				64BB6B302BFFF37B00C3D0E8 /* Authentication */,
 				646CC8422A9DA5A10063A39A /* Models */,
-				64ED28332AF87DF500AD81CD /* RepositoryProtocol.swift */,
-				64ED28352AF8827D00AD81CD /* DataSourceRepository.swift */,
-				646CC8412A9DA5A10063A39A /* LocalDataSource.swift */,
-				64F2CFF32AF9AB4F00344A52 /* RemoteDataSource.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -776,7 +789,6 @@
 				643587722909E54A00D59F7C /* Box.swift in Sources */,
 				64CCDDC329A672F500A13F90 /* UINavigationController.swift in Sources */,
 				64ED3A43291485E3002B9CF1 /* AddItemViewModel.swift in Sources */,
-				64B649EF295A3D72005A92B4 /* CustomError.swift in Sources */,
 				64D5125D291B056000D9E634 /* TodoItemCell.swift in Sources */,
 				64BC203629034D4C0032BEBE /* TodoItem.swift in Sources */,
 				64ED28362AF8827D00AD81CD /* DataSourceRepository.swift in Sources */,
