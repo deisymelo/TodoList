@@ -123,9 +123,21 @@ public final class LocalDataSource: DataSourceProtocol {
 
         }.eraseToAnyPublisher()
     }
+    
+    func cleanData() {
+        let fetchRequest = NSFetchRequest<TodoItemEntity>(entityName: "TodoItemEntity")
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(fetchRequest)
+            for object in results {
+                let objectData = object as NSManagedObject
+                context.delete(objectData)
+            }
+        } catch let error {
+            print("Detele all data error :", error)
+        }
+    }
 }
-
-
 
 public extension URL {
     /// Returns a URL for the given app group and database pointing to the sqlite database.

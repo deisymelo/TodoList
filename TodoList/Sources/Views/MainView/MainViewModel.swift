@@ -83,12 +83,12 @@ class MainViewModel: MainViewModelProtocol, MainViewModelCoordinatorProtocol {
             }.store(in: &cancellables)
     }
     
+    @MainActor
     func logOut() async {
         do {
             try await userSession.logout()
-            DispatchQueue.main.async {
-                self.delegate?.logOutNavigation()
-            }
+            self.repository.cleanData()
+            self.delegate?.logOutNavigation()
         } catch {
             self.delegate?.displayError(msn: "log out failed")
         }

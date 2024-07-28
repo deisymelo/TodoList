@@ -13,7 +13,8 @@ final class DataManagerMock: RepositoryProtocol {
     var item: TodoItem?
     var updateStatusCheck: Bool = false
     var itemsList: [TodoItem] = []
-    
+    var cleanDataIsCalled: Bool = false
+
     public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {
         let id = "1"
         let item = TodoItem(
@@ -71,6 +72,10 @@ final class DataManagerMock: RepositoryProtocol {
         Future { promise in
             promise(.success(nil))
         }.eraseToAnyPublisher()
+    }
+
+    func cleanData() {
+        cleanDataIsCalled = true
     }
 }
 

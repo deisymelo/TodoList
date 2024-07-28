@@ -113,4 +113,6 @@ public class RemoteDataSource: DataSourceProtocol {
             promise(.success(DataItem(title: "prueba", description: "")))
         }.eraseToAnyPublisher()
     }
+    
+    func cleanData() {}
 }

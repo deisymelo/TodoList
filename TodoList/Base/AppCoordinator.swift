@@ -27,7 +27,8 @@ final class AppCoordinator: Coordinator<Void> {
     let navigationController = UINavigationController()
     var repository: RepositoryProtocol
     private let userSession: UserSession = FirebaseAuthenticationRepository()
-    
+    let keychainManager: KeychainManager = KeychainWrapper()
+
     init(window: UIWindow) {
         self.window = window
         
@@ -53,7 +54,8 @@ final class AppCoordinator: Coordinator<Void> {
     func openAutenticationPage() {
         let coordinator = LoginCoordinator(
             navigationController: navigationController,
-            repository: FirebaseAuthenticationRepository()
+            repository: FirebaseAuthenticationRepository(), 
+            keychainManager: keychainManager
         )
         
         childCoordinators.append(coordinator)

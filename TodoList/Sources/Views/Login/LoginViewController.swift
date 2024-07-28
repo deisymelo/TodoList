@@ -36,6 +36,7 @@ class LoginViewController: UIViewController {
         textField.frame.size.height = 20
         textField.placeholder = "Email"
         textField.borderStyle = .roundedRect
+        textField.textContentType = .username
         return textField
     }()
     
@@ -45,6 +46,8 @@ class LoginViewController: UIViewController {
         textField.placeholder = "Password"
         textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
+        textField.textContentType = .password
+        textField.delegate = self
         return textField
     }()
     
@@ -127,5 +130,18 @@ class LoginViewController: UIViewController {
     @objc func onPressSignUpButton() {
         viewModel.signUpDidTap()
     }
+}
 
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard textField == passwordTextView else {
+            return
+        }
+
+        let user = emailTextView.text ?? ""
+        if !user.isEmpty,
+           let pass = viewModel.getUserCredentials(user: user) {
+            passwordTextView.text = pass
+        }
+    }
 }

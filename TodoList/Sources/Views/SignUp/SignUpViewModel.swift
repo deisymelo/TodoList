@@ -17,10 +17,12 @@ class SignUpViewModel: SignUpViewModelProtocol {
     
     weak var delegate: SignUpCoordinatorProtocol?
     var repository: AuthenticationProtocol
+    var keychainManager: KeychainManager
     private var cancellables = Set<AnyCancellable>()
     
-    init(repository: AuthenticationProtocol) {
+    init(repository: AuthenticationProtocol, keychainManager: KeychainManager) {
         self.repository = repository
+        self.keychainManager = keychainManager
     }
     
     func signup(email: String, pass: String) {
@@ -32,10 +34,11 @@ class SignUpViewModel: SignUpViewModelProtocol {
         repository.signup(email: email, pass: pass)
             .receive(on: DispatchQueue.main)
             .sink { completionState in
-                if case .failure(let error) = completionState {
-                    self.delegate?.displayError(msn: error.localizedDescription)
+                if case .failure = completionState {
+                    self.delegate?.displayError(msn: "Sign up error")
                 }
-            } receiveValue: { user in
+            } receiveValue: { _ in
+                self.storeUserInKeyChain(email: email, password: pass)
                 self.delegate?.signUpSuccess()
             }.store(in: &cancellables)
     }
@@ -44,8 +47,9 @@ class SignUpViewModel: SignUpViewModelProtocol {
         delegate?.didDisappear()
     }
     
-    func storeUserInKeyChain() {
-        // Guardar la info en el keyChain
+    func storeUserInKeyChain(email: String, password: String) {
+        guard let data = password.data(using: .utf8) else { return }
+        keychainManager.saveData(data, forKey: email)
     }
     
     func validateBio() {
@@ -53,9 +57,5 @@ class SignUpViewModel: SignUpViewModelProtocol {
         // Llamar localAutentication
         // Guardar user y pass en el keyChain
         
-    }
-    
-    func getUserCredentials() {
-        // auto fill del formulario
     }
 }

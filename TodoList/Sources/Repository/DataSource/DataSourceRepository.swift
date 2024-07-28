@@ -13,6 +13,7 @@ protocol DataSourceProtocol {
     func getItems() -> AnyPublisher<[Item], Error>
     func getItemBy(_ id: String) -> AnyPublisher<Item?, Error>
     func updateStatus(_ id: String) -> AnyPublisher<Item, Error>
+    func cleanData()
 }
 
 public enum DataError: Error {
@@ -36,6 +37,10 @@ final class DataSourceRepository: RepositoryProtocol {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
         self.userSession = userSession
+    }
+    
+    func cleanData() {
+        localDataSource.cleanData()
     }
     
     public func saveItem(_ item: Item) -> AnyPublisher<Bool, Error> {

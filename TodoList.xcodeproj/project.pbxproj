@@ -66,6 +66,8 @@
 		64A4659C29A468DE00A504C4 /* DetailViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A4659B29A468DE00A504C4 /* DetailViewCoordinatorTests.swift */; };
 		64AFD51E2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64AFD51F2C16713400FCF1B5 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
+		64AFD5252C16877D00FCF1B5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64AFD5242C16877D00FCF1B5 /* Security.framework */; };
+		64AFD5282C1687FF00FCF1B5 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AFD5272C1687FF00FCF1B5 /* KeychainWrapper.swift */; };
 		64B0101B2966278600D18A99 /* DataManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B0101A2966278600D18A99 /* DataManagerMock.swift */; };
 		64BB6B2F2BFFF26400C3D0E8 /* AuthenticationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */; };
 		64BB6B322BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BB6B312BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift */; };
@@ -190,6 +192,8 @@
 		64A4659729A445EC00A504C4 /* MainViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		64A4659929A466D300A504C4 /* AddItemCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCoordinatorTests.swift; sourceTree = "<group>"; };
 		64A4659B29A468DE00A504C4 /* DetailViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewCoordinatorTests.swift; sourceTree = "<group>"; };
+		64AFD5242C16877D00FCF1B5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		64AFD5272C1687FF00FCF1B5 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		64B0101A2966278600D18A99 /* DataManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerMock.swift; sourceTree = "<group>"; };
 		64BB6B2E2BFFF26400C3D0E8 /* AuthenticationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProtocol.swift; sourceTree = "<group>"; };
 		64BB6B312BFFF39900C3D0E8 /* FirebaseAuthenticationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthenticationRepository.swift; sourceTree = "<group>"; };
@@ -212,6 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64AFD5252C16877D00FCF1B5 /* Security.framework in Frameworks */,
 				64980ADA2B0052D900F2884E /* FirebaseFirestore in Frameworks */,
 				640C6B872BFAC1560024DDF5 /* FirebaseAuth in Frameworks */,
 			);
@@ -373,6 +378,7 @@
 		643F4E7929D4E26D00C5D114 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64AFD5242C16877D00FCF1B5 /* Security.framework */,
 				643F4E7A29D4E26D00C5D114 /* Intents.framework */,
 				643F4E8529D4E26D00C5D114 /* IntentsUI.framework */,
 			);
@@ -489,6 +495,14 @@
 			path = DataSource;
 			sourceTree = "<group>";
 		};
+		64AFD5262C1687F100FCF1B5 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				64AFD5272C1687FF00FCF1B5 /* KeychainWrapper.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		64B010192966277400D18A99 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,6 +545,7 @@
 		64C97FB02AF1DD4800CB33AB /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				64AFD5262C1687F100FCF1B5 /* Security */,
 				64AFD5232C16860800FCF1B5 /* DataSource */,
 				64BB6B302BFFF37B00C3D0E8 /* Authentication */,
 				646CC8422A9DA5A10063A39A /* Models */,
@@ -807,6 +822,7 @@
 				64B0101B2966278600D18A99 /* DataManagerMock.swift in Sources */,
 				64ED3A3F291485C8002B9CF1 /* AddItemViewController.swift in Sources */,
 				64568C9C2BE83CB7008C8269 /* LoginCoordinator.swift in Sources */,
+				64AFD5282C1687FF00FCF1B5 /* KeychainWrapper.swift in Sources */,
 				64568C9A2BE83CAC008C8269 /* LoginViewModel.swift in Sources */,
 				6422E89C290200F100990A4B /* MainCoordinator.swift in Sources */,
 				64F2CFF42AF9AB4F00344A52 /* RemoteDataSource.swift in Sources */,
@@ -1052,7 +1068,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodoList/TodoList.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FEX443V8U8;
+				DEVELOPMENT_TEAM = 25SZ83YBG4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoList/Base/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1085,7 +1101,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodoList/TodoList.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FEX443V8U8;
+				DEVELOPMENT_TEAM = 25SZ83YBG4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoList/Base/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

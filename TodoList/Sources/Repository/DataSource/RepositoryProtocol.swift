@@ -12,4 +12,5 @@ public protocol RepositoryProtocol {
     func getItems() -> AnyPublisher<[Item], Error>
     func getItemBy(_ id: String) -> AnyPublisher<Item?, Error>
     func updateStatus(_ id: String) -> AnyPublisher<Item, Error>
+    func cleanData()
 }

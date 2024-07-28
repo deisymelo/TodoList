@@ -24,14 +24,20 @@ class SignUpCoordinator: Coordinator<SignUpStatus> {
     var viewModel: SignUpViewModel?
     weak var viewController: SignUpViewController?
     var repository: AuthenticationProtocol
-    
-    init(navigationController: UINavigationController, repository: AuthenticationProtocol) {
+    var keychainManager: KeychainManager
+
+    init(navigationController: UINavigationController, 
+         repository: AuthenticationProtocol,
+         keychainManager: KeychainManager
+    ) {
         self.navigationController = navigationController
         self.repository = repository
+        self.keychainManager = keychainManager
     }
     
     override func start() {
-        let viewModel = SignUpViewModel(repository: repository)
+        let viewModel = SignUpViewModel(repository: repository, 
+                                        keychainManager: keychainManager)
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = SignUpViewController(viewModel: viewModel)

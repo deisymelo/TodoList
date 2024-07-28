@@ -19,14 +19,20 @@ class LoginCoordinator: Coordinator<Void> {
     var viewModel: LoginViewModel?
     weak var viewController: LoginViewController?
     var repository: AuthenticationProtocol
-    
-    init(navigationController: UINavigationController, repository: AuthenticationProtocol) {
+    var keychainManager: KeychainManager
+
+    init(navigationController: UINavigationController, 
+         repository: AuthenticationProtocol,
+         keychainManager: KeychainManager
+    ) {
         self.navigationController = navigationController
         self.repository = repository
+        self.keychainManager = keychainManager
     }
     
     override func start() {
-        let viewModel = LoginViewModel(repository: repository)
+        let viewModel = LoginViewModel(repository: repository, 
+                                       keychainManager: keychainManager)
         self.viewModel = viewModel
         self.viewModel?.delegate = self
         let viewController = LoginViewController(viewModel: viewModel)
@@ -43,7 +49,8 @@ extension LoginCoordinator: AuthenticationCoordinatorProtocol {
     func signUpDidTap() {
         let signUpCoordinator = SignUpCoordinator(
             navigationController: navigationController,
-            repository: repository
+            repository: repository, 
+            keychainManager: keychainManager
         )
         
         signUpCoordinator.onFinish = { [weak self] status in
